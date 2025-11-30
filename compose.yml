@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: toolrent-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 5036
+      MYSQL_DATABASE: toolrent_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: toolrent-keycloak
+    environment:
+      KC_DB: mysql
+      KC_DB_URL_HOST: db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: 5036
+      KEYCLOAK_ADMIN: IsiAdmin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+    depends_on:
+      - db
+
+  backend:
+    build: ./backend                 
+    image: isidorarojas/toolrent-backend:latest
+    container_name: toolrent-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: toolrent
+      DB_USER: root
+      DB_PASSWORD: 5036
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: toolrent-realm
+    ports:
+      - "8090:8090"
+    depends_on:
+      - db
+      - keycloak
+
+  frontend:
+    build: ./frontend                
+    image: isidorarojas/toolrent-frontend:latest
+    container_name: toolrent-frontend
+    ports:
+      - "8070:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
