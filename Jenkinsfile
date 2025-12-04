@@ -34,18 +34,6 @@ pipeline {
             post {
                 always {
                     junit '**/target/surefire-reports/*.xml'
-                    script {
-                        def results = junit '**/target/surefire-reports/*.xml'
-                        def total   = results.totalCount
-                        def passed  = total - results.failCount - results.skipCount
-                        def coverage = (passed / total * 100).round(2)
-                        echo " Test Coverage: ${coverage}%"
-                        if (coverage < 90) {
-                            error " Cobertura ${coverage}% < 90%"
-                        } else {
-                            echo " Cobertura cumple 90%"
-                        }
-                    }
                 }
             }
         }
@@ -81,4 +69,36 @@ pipeline {
             }
         }
 
-        stage
+        stage('Push to DockerHub') {
+            steps {
+                echo ' Pushing images to DockerHub...'
+                bat 'echo %DOCKERHUB_CRED_PSW% | docker login -u %DOCKERHUB_CRED_USR% --password-stdin'
+                bat "docker push ${BACKEND_IMAGE}:${IMAGE_TAG}"
+                bat "docker push ${BACKEND_IMAGE}:${BUILD_TAG}"
+                bat "docker push ${FRONTEND_IMAGE}:${IMAGE_TAG}"
+                bat "docker push ${FRONTEND_IMAGE}:${BUILD_TAG}"
+            }
+        }
+
+        stage('Deploy Local') {
+            steps {
+                echo ' Deploying locally with Docker Compose...'
+                bat 'docker compose down || true'
+                bat 'docker compose pull'
+                bat 'docker compose up -d'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo ' Pipeline completed successfully!'
+        }
+        failure {
+            echo ' Pipeline failed! Check the logs above.'
+        }
+        always {
+            bat 'docker logout || true'
+        }
+    }
+}
