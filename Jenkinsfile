@@ -28,12 +28,12 @@ pipeline {
             steps {
                 echo ' Running Backend Unit Tests (JUnit)...'
                 dir('backend') {
-                    bat 'mvn clean test'
+                    sh 'mvn clean test'
                 }
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit 'backend/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 echo ' Building Spring Boot Backend...'
                 dir('backend') {
-                    bat 'mvn clean package -DskipTests'
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
@@ -51,8 +51,8 @@ pipeline {
             steps {
                 echo ' Building React Frontend...'
                 dir('frontend') {
-                    bat 'npm ci'
-                    bat 'npm run build'
+                    sh 'npm ci'
+                    sh 'npm run build'
                 }
             }
         }
@@ -61,10 +61,10 @@ pipeline {
             steps {
                 echo ' Building Docker images...'
                 dir('backend') {
-                    bat "docker build -t ${BACKEND_IMAGE}:${IMAGE_TAG} -t ${BACKEND_IMAGE}:${BUILD_TAG} ."
+                    sh "docker build -t ${BACKEND_IMAGE}:${IMAGE_TAG} -t ${BACKEND_IMAGE}:${BUILD_TAG} ."
                 }
                 dir('frontend') {
-                    bat "docker build -t ${FRONTEND_IMAGE}:${IMAGE_TAG} -t ${FRONTEND_IMAGE}:${BUILD_TAG} ."
+                    sh "docker build -t ${FRONTEND_IMAGE}:${IMAGE_TAG} -t ${FRONTEND_IMAGE}:${BUILD_TAG} ."
                 }
             }
         }
@@ -72,20 +72,20 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 echo ' Pushing images to DockerHub...'
-                bat 'echo %DOCKERHUB_CRED_PSW% | docker login -u %DOCKERHUB_CRED_USR% --password-stdin'
-                bat "docker push ${BACKEND_IMAGE}:${IMAGE_TAG}"
-                bat "docker push ${BACKEND_IMAGE}:${BUILD_TAG}"
-                bat "docker push ${FRONTEND_IMAGE}:${IMAGE_TAG}"
-                bat "docker push ${FRONTEND_IMAGE}:${BUILD_TAG}"
+                sh 'echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin'
+                sh "docker push ${BACKEND_IMAGE}:${IMAGE_TAG}"
+                sh "docker push ${BACKEND_IMAGE}:${BUILD_TAG}"
+                sh "docker push ${FRONTEND_IMAGE}:${IMAGE_TAG}"
+                sh "docker push ${FRONTEND_IMAGE}:${BUILD_TAG}"
             }
         }
 
         stage('Deploy Local') {
             steps {
                 echo ' Deploying locally with Docker Compose...'
-                bat 'docker compose down || true'
-                bat 'docker compose pull'
-                bat 'docker compose up -d'
+                sh 'docker compose down || true'
+                sh 'docker compose pull'
+                sh 'docker compose up -d'
             }
         }
     }
@@ -98,7 +98,7 @@ pipeline {
             echo ' Pipeline failed! Check the logs above.'
         }
         always {
-            bat 'docker logout || true'
+            sh 'docker logout || true'
         }
     }
 }
