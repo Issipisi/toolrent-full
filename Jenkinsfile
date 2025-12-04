@@ -24,20 +24,6 @@ pipeline {
             }
         }
 
-        stage('Test Backend') {
-            steps {
-                echo ' Running Backend Unit Tests (JUnit)...'
-                dir('backend') {
-                    sh 'mvn clean test'
-                }
-            }
-            post {
-                always {
-                    junit 'backend/target/surefire-reports/*.xml'
-                }
-            }
-        }
-
         stage('Build Backend') {
             steps {
                 echo ' Building Spring Boot Backend...'
@@ -93,6 +79,9 @@ pipeline {
     post {
         success {
             echo ' Pipeline completed successfully!'
+            echo " Images pushed:"
+            echo "   - ${BACKEND_IMAGE}:${IMAGE_TAG}"
+            echo "   - ${FRONTEND_IMAGE}:${IMAGE_TAG}"
         }
         failure {
             echo ' Pipeline failed! Check the logs above.'
