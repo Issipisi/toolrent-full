@@ -12,10 +12,14 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p5036"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    command: --default-authentication-plugin=mysql_native_password
+      interval: 30s      
+      timeout: 10s       
+      retries: 15        
+      start_period: 60s  
+    command: 
+      --default-authentication-plugin=mysql_native_password
+    networks:
+      - toolrent-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
@@ -29,6 +33,9 @@ services:
       KEYCLOAK_ADMIN: IsiAdmin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: true
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY: edge
     ports:
       - "8081:8080"
     command: start-dev
@@ -36,6 +43,9 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - toolrent-network
+      
 
   backend:
     build: 
@@ -50,24 +60,37 @@ services:
       DB_NAME: toolrent_db
       DB_USERNAME: root
       DB_PASSWORD: 5036
-      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8081
       KEYCLOAK_REALM: toolrent-realm
+      KEYCLOAK_CLIENT_SECRET: pYvZAJ4Vjj7mFbVOxQW3S6nZNrQztdYT
     ports:
       - "8090:8090"
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - toolrent-network
 
   frontend:
     build: ./frontend
     image: isidorarojas/toolrent-frontend:latest
     container_name: toolrent-frontend
+    environment:
+      VITE_KEYCLOAK_URL: http://keycloak:8081
+      VITE_KEYCLOAK_REALM: toolrent-realm
+      VITE_KEYCLOAK_CLIENT_ID: toolrent-frontend
     ports:
       - "8070:80"
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - toolrent-network
 
 volumes:
   db_data:
+
+networks:
+  toolrent-network:
+    driver: bridge
