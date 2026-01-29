@@ -38,17 +38,20 @@ public interface LoanRepository extends JpaRepository<LoanEntity, Long> {
                                                @Param("to") LocalDateTime to);
 
     // Ranking de grupos más prestados en un rango de fechas (nativo)
-    @Query(value = """
-        SELECT tg.id   AS toolGroupId,
-               tg.name AS toolGroupName,
-               COUNT(l.id) AS total
-        FROM loans l
-        JOIN tool_units tu ON l.tool_unit_id = tu.id
-        JOIN tool_groups tg ON tu.tool_group_id = tg.id
-        WHERE l.loan_date BETWEEN :from AND :to
-        GROUP BY tg.id, tg.name
-        ORDER BY total DESC
-    """, nativeQuery = true)
+    @Query("""
+    SELECT new map(
+        tg.id as toolGroupId,
+        tg.name as toolGroupName,
+        tg.category as category,
+        COUNT(l.id) as total
+    )
+    FROM LoanEntity l
+    JOIN l.toolUnit tu
+    JOIN tu.toolGroup tg
+    WHERE l.loanDate BETWEEN :from AND :to
+    GROUP BY tg.id, tg.name, tg.category
+    ORDER BY COUNT(l.id) DESC
+""")
     List<Map<String, Object>> countLoansByToolGroupInRange(@Param("from") LocalDateTime from,
                                                            @Param("to") LocalDateTime to);
 
