@@ -180,7 +180,7 @@ const TariffView = () => {
 
       {/* ---------- Tarjetas de estadísticas ---------- */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4}}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="primary">
@@ -193,7 +193,7 @@ const TariffView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4}}>
           <Card sx={{ borderLeft: '4px solid #4caf50' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="success.main">
@@ -206,7 +206,7 @@ const TariffView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4}}>
           <Card sx={{ borderLeft: '4px solid #2196f3' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="info.main">
@@ -223,7 +223,7 @@ const TariffView = () => {
       {/* ---------- Vista principal: dos columnas ---------- */}
       <Grid container spacing={3}>
         {/* Columna izquierda: Selector y formulario */}
-        <Grid item xs={12} md={5}>
+        <Grid size={{ xs: 12, md: 5}}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -279,7 +279,7 @@ const TariffView = () => {
                         Tarifas de Alquiler
                       </Typography>
                       <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6}}>
                           <TextField
                             label="Tarifa Diaria ($)"
                             type="number"
@@ -291,7 +291,7 @@ const TariffView = () => {
                             }}
                           />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6}}>
                           <TextField
                             label="Multa Diaria ($)"
                             type="number"
@@ -364,7 +364,7 @@ const TariffView = () => {
         </Grid>
 
         {/* Columna derecha: Tabla de resumen */}
-        <Grid item xs={12} md={7}>
+        <Grid size={{ xs: 12, md: 7}}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>

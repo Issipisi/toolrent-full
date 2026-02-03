@@ -224,7 +224,7 @@ const KardexView = () => {
 
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4">{stats.total}</Typography>
@@ -233,7 +233,7 @@ const KardexView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card sx={{ borderLeft: '4px solid #2196f3' }}>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#2196f3" }}>
@@ -244,7 +244,7 @@ const KardexView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card sx={{ borderLeft: '4px solid #4caf50' }}>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#4caf50" }}>
@@ -255,7 +255,7 @@ const KardexView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card sx={{ borderLeft: '4px solid #ff9800' }}>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#ff9800" }}>
@@ -279,7 +279,7 @@ const KardexView = () => {
           
           <Grid container spacing={2} alignItems="flex-end">
             {/* Filtro por herramienta */}
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3}}>
               <TextField
                 select
                 fullWidth
@@ -298,7 +298,7 @@ const KardexView = () => {
             </Grid>
 
             {/* Filtro por tipo */}
-            <Grid item xs={12} md={2}>
+            <Grid size={{ xs: 12, md: 2}}>
               <TextField
                 select
                 fullWidth
@@ -316,7 +316,7 @@ const KardexView = () => {
             </Grid>
 
             {/* Filtro por fechas */}
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4}}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Stack direction="row" spacing={1} alignItems="center">
                   <CalendarMonthIcon color="action" fontSize="small" />
@@ -348,7 +348,7 @@ const KardexView = () => {
             </Grid>
 
             {/* Botones de acción */}
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3}}>
               <Stack direction="row" spacing={1}>
                 <Button 
                   variant="contained" 

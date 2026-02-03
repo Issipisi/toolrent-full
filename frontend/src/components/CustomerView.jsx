@@ -159,7 +159,7 @@ const CustomerView = () => {
 
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 4}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="primary.main">
@@ -170,7 +170,7 @@ const CustomerView = () => {
           </Card>
         </Grid>
         
-        <Grid item size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 4}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#4caf50" }}>
@@ -181,7 +181,7 @@ const CustomerView = () => {
           </Card>
         </Grid>
         
-        <Grid item size={{ xs: 12, sm: 4 }}>
+       <Grid size={{ xs: 12, sm: 4}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#f44336" }}>

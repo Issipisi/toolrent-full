@@ -17,6 +17,13 @@ import { useKeycloak } from "@react-keycloak/web";
 function App() {
   const { keycloak, initialized } = useKeycloak();
 
+  // Agrega este console.log para debug:
+  console.log('Keycloak estado:', {
+    initialized,
+    authenticated: keycloak?.authenticated,
+    token: keycloak?.token ? 'Presente' : 'Ausente'
+  });
+
   // Mostrar loading mientras Keycloak se inicializa
   if (!initialized) {
     return (
@@ -32,7 +39,9 @@ function App() {
   }
 
   // Si no está autenticado, Keycloak se encargará
-  if (!keycloak.authenticated) {
+  if (!keycloak.authenticated && initialized) {
+    console.log('Forzando login...');
+    keycloak.login();  // Esto redirige a Keycloak
     return (
       <Box sx={{ 
         display: 'flex', 

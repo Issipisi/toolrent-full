@@ -163,7 +163,7 @@ const Home = () => {
         
         <Grid container spacing={3}>
           {availableFeatures.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
               <Card 
                 sx={{ 
                   height: '100%',
@@ -256,7 +256,7 @@ const Home = () => {
           </Typography>
           
           <Grid container spacing={20}>
-            <Grid item xs={20} md={6}>
+            <Grid size={{ xs: 20, sm: 6 }}>
               <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', color: '#333' }}>
                 Backend
               </Typography>
@@ -269,7 +269,7 @@ const Home = () => {
               </Stack>
             </Grid>
             
-            <Grid item xs={20} md={6}>
+            <Grid size={{ xs: 20, sm: 6 }}>
               <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', color: '#333' }}>
                 Frontend
               </Typography>

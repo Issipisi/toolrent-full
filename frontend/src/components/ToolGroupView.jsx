@@ -144,7 +144,7 @@ const ToolGroupView = () => {
 
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#6c63ff" }}>
@@ -157,7 +157,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#4caf50" }}>
@@ -170,7 +170,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#2196f3" }}>
@@ -183,7 +183,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3}}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#ff9800" }}>
@@ -391,7 +391,7 @@ const ToolGroupView = () => {
             </TextField>
             
             <Grid container spacing={2}>
-              <Grid item size={{ xs: 12, sm: 6 }}>
+              <Grid size={{ xs: 12, sm: 6}}>
                 <TextField
                   label="Tarifa Diaria ($)"
                   type="number"
@@ -403,7 +403,7 @@ const ToolGroupView = () => {
                   helperText="Precio por día de alquiler"
                 />
               </Grid>
-              <Grid item size={{ xs: 12, sm: 6 }}>
+              <Grid size={{ xs: 12, sm: 6}}>
                 <TextField
                   label="Valor de Reposición ($)"
                   type="number"

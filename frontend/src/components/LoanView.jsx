@@ -48,7 +48,6 @@ const LoanView = () => {
   /* ---------- CARGAS ---------- */
   const loadAll = async () => {
     setLoading(true);
-    setMessage({ type: '', text: '' });
     try {
       await Promise.all([
         loadActive(),
@@ -135,9 +134,21 @@ const LoanView = () => {
         );
       }
       
+      console.log('1. Antes de setMessage');
       setMessage({ type: 'success', text: '✅ Préstamo registrado exitosamente' });
+      
+      console.log('2. Mensaje establecido:', message); // OJO: esto mostrará el estado anterior
+
+       // Para ver el estado actual, usa un useEffect o timeout
+      setTimeout(() => {
+        console.log('3. Estado actual de message:', message);
+      }, 0);
+
       setOpen(false);
       setForm({ customerId: "", toolGroupId: "", dueDate: dayjs().add(7, 'day') });
+
+      console.log('4. Después de setOpen');
+
       loadAll();
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
@@ -276,14 +287,18 @@ const LoanView = () => {
 
       {/* Mensajes */}
       {message.text && (
-        <Alert severity={message.type} sx={{ mb: 3 }}>
+        <Alert 
+          severity={message.type} 
+          sx={{ mb: 3 }}
+          onClose={() => setMessage({ type: '', text: '' })}
+        >
           {message.text}
         </Alert>
       )}
 
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#6c63ff" }}>
@@ -296,7 +311,7 @@ const LoanView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#f44336" }}>
@@ -309,7 +324,7 @@ const LoanView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#ff9800" }}>
@@ -322,7 +337,7 @@ const LoanView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={3}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#9c27b0" }}>

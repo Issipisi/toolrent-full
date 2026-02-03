@@ -30,7 +30,6 @@ const ToolUnitView = () => {
     setLoading(true);
     try {
       const res = await toolUnitService.getAllWithDetails(); // Tu método original
-      console.log("Unidades cargadas:", res.data);
       setUnits(res.data || []);
 
       // Mantiene tu lógica de extracción de nombres únicos
@@ -179,7 +178,7 @@ const ToolUnitView = () => {
 
       {/* ---------- Tarjetas de estadísticas (NUEVO diseño) ---------- */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={2.4}>
+        <Grid size={{ xs: 12, sm: 2.4}}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4">{stats.total}</Typography>
@@ -188,7 +187,7 @@ const ToolUnitView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={2.4}>
+        <Grid size={{ xs: 12, sm: 2.4}}>
           <Card sx={{ borderLeft: '4px solid #4caf50' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="success.main">
@@ -199,7 +198,7 @@ const ToolUnitView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={2.4}>
+        <Grid size={{ xs: 12, sm: 2.4}}>
           <Card sx={{ borderLeft: '4px solid #ff9800' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="warning.main">
@@ -210,7 +209,7 @@ const ToolUnitView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={2.4}>
+        <Grid size={{ xs: 12, sm: 2.4}}>
           <Card sx={{ borderLeft: '4px solid #2196f3' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="info.main">
@@ -221,7 +220,7 @@ const ToolUnitView = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={2.4}>
+        <Grid size={{ xs: 12, sm: 2.4}}>
           <Card sx={{ borderLeft: '4px solid #f44336' }}>
             <CardContent sx={{ textAlign: 'center' }}>
               <Typography variant="h4" color="error.main">
