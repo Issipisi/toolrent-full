@@ -10,12 +10,75 @@ import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import { useKeycloak } from "@react-keycloak/web";
+import { useEffect, useState } from "react";
+import loanService from "../services/loan.service";
+import toolGroupService from "../services/toolGroup.service";
+import dayjs from "dayjs";
+import AddIcon from '@mui/icons-material/Add';
 
 const Home = () => {
   const { keycloak } = useKeycloak();
   const userRoles = keycloak.tokenParsed?.realm_access?.roles || [];
   const isAdmin = userRoles.includes("ADMIN");
   const isEmployee = userRoles.includes("EMPLOYEE");
+  
+  const [dashboardStats, setDashboardStats] = useState({
+    activeLoans: 0,
+    overdueLoans: 0,
+    totalDebts: 0,
+    availableTools: 0,
+    loading: true
+  });
+
+  // Cargar estadísticas del dashboard
+  useEffect(() => {
+    const loadDashboardStats = async () => {
+      try {
+        const [loansRes, debtsRes, toolsRes] = await Promise.all([
+          loanService.getActive().catch(() => ({ data: [] })),
+          loanService.getPendingPayment().catch(() => ({ data: [] })),
+          toolGroupService.getAvailable().catch(() => ({ data: [] }))
+        ]);
+
+        const activeLoans = loansRes.data?.length || 0;
+        const overdueLoans = loansRes.data?.filter(l => 
+          l.dueDate && dayjs(l.dueDate).isBefore(dayjs())
+        ).length || 0;
+        
+        const totalDebts = debtsRes.data?.reduce((sum, d) => 
+          sum + (d.fineAmount || 0) + (d.damageCharge || 0), 0
+        ) || 0;
+        
+        // Calcular herramientas disponibles
+        const availableTools = Array.isArray(toolsRes.data) 
+        ? toolsRes.data.reduce((sum, tool) => {
+            // Si tiene units, contar cuántas están en estado AVAILABLE
+            if (tool.units && Array.isArray(tool.units)) {
+              const availableUnits = tool.units.filter(unit => unit.status === 'AVAILABLE').length;
+              return sum + availableUnits;
+            }
+            // Si tiene availableCount, usarlo
+            return sum + (tool.availableCount || 0);
+          }, 0)
+        : 0;
+
+
+
+        setDashboardStats({
+          activeLoans,
+          overdueLoans,
+          totalDebts,
+          availableTools,
+          loading: false
+        });
+      } catch (error) {
+        console.error("Error cargando estadísticas:", error);
+        setDashboardStats(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    loadDashboardStats();
+  }, []);
 
   const adminFeatures = [
     {
@@ -79,7 +142,7 @@ const Home = () => {
   return (
     <Paper sx={{ p: 4, background: "#ffffff", minHeight: '80vh' }}>
       {/* Encabezado */}
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
         <Typography variant="h3" sx={{ 
           color: "#6c63ff", 
           mb: 2,
@@ -99,22 +162,105 @@ const Home = () => {
           {isAdmin && " Como administrador, tienes acceso completo a todas las funcionalidades."}
           {isEmployee && " Como empleado, puedes gestionar préstamos y ver reportes."}
         </Typography>
+      </Box>
 
-        <Typography variant="body1" sx={{ 
-          color: "#555", 
-          mb: 4, 
-          maxWidth: '900px', 
-          mx: 'auto',
-          textAlign: 'justify',
-          lineHeight: 1.6
+      {/* Estadísticas del Dashboard - MEJOR CENTRADAS */}
+      <Box sx={{ mb: 6 }}>
+        <Typography variant="h5" sx={{ 
+          color: "#6c63ff", 
+          mb: 3, 
+          textAlign: 'center',
+          fontWeight: 'bold'
         }}>
-          ToolRent es un sistema web que automatiza el alquiler de herramientas, reemplazando los registros manuales 
-          por un control digital en tiempo real. Permite gestionar inventario, préstamos, devoluciones y multas 
-          automáticamente, evitando pérdidas por herramientas extraviadas, agilizando la atención al cliente y 
-          garantizando transparencia en todas las operaciones de la tienda.
+          📊 Resumen General
         </Typography>
         
-        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mb: 6 }}>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ height: '100%', boxShadow: 2 }}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h3" color="#6c63ff" sx={{ mb: 1 }}>
+                  {dashboardStats.loading ? "..." : dashboardStats.activeLoans}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Préstamos Activos
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ height: '100%', boxShadow: 2 }}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h3" color="#f44336" sx={{ mb: 1 }}>
+                  {dashboardStats.loading ? "..." : dashboardStats.overdueLoans}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Vencidos
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ height: '100%', boxShadow: 2 }}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h3" color="#ff9800" sx={{ mb: 1 }}>
+                  {dashboardStats.loading ? "..." : `$${dashboardStats.totalDebts.toLocaleString()}`}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Deuda Total
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ height: '100%', boxShadow: 2 }}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography variant="h3" color="#4caf50" sx={{ mb: 1 }}>
+                  {dashboardStats.loading ? "..." : dashboardStats.availableTools}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Herramientas Disponibles
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* Botones de acción principales */}
+      <Box sx={{ mb: 6, textAlign: 'center' }}>
+        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mb: 4 }}>
           {isEmployee || isAdmin ? (
             <Button 
               variant="contained" 
@@ -123,9 +269,13 @@ const Home = () => {
               to="/loans"
               sx={{ 
                 background: "linear-gradient(135deg, #6c63ff 0%, #9d4edd 100%)",
-                px: 4
+                px: 5,
+                py: 1.5,
+                fontWeight: 'bold',
+                borderRadius: 2
               }}
             >
+              <AddIcon sx={{ mr: 1 }} />
               Comenzar Préstamo
             </Button>
           ) : null}
@@ -138,20 +288,36 @@ const Home = () => {
               to="/tools"
               sx={{ 
                 borderColor: "#6c63ff",
-                color: "#6c63ff"
+                color: "#6c63ff",
+                px: 5,
+                py: 1.5,
+                fontWeight: 'bold',
+                borderRadius: 2
               }}
             >
+              <BuildIcon sx={{ mr: 1 }} />
               Ver Inventario
             </Button>
           )}
         </Stack>
+        
+        <Typography variant="body1" sx={{ 
+          color: "#555", 
+          maxWidth: '900px', 
+          mx: 'auto',
+          textAlign: 'center',
+          lineHeight: 1.6
+        }}>
+          ToolRent es un sistema web que automatiza el alquiler de herramientas, reemplazando los registros manuales 
+          por un control digital en tiempo real.
+        </Typography>
       </Box>
 
-      {/* Funcionalidades disponibles según rol */}
+      {/* Funcionalidades disponibles según rol - MEJOR DISTRIBUIDAS */}
       <Box sx={{ mb: 6 }}>
         <Typography variant="h4" sx={{ 
           color: "#6c63ff", 
-          mb: 3, 
+          mb: 4, 
           textAlign: 'center',
           display: 'flex',
           alignItems: 'center',
@@ -161,12 +327,12 @@ const Home = () => {
           <InventoryIcon /> Funcionalidades Disponibles
         </Typography>
         
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           {availableFeatures.map((feature, index) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index} sx={{ display: 'flex' }}>
               <Card 
                 sx={{ 
-                  height: '100%',
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'transform 0.2s, box-shadow 0.2s',
@@ -181,30 +347,33 @@ const Home = () => {
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}>
                   <Box sx={{ 
-                    backgroundColor: `${feature.color}15`, // 15 = 8% opacity
-                    width: 80,
-                    height: 80,
+                    backgroundColor: `${feature.color}15`,
+                    width: 70,
+                    height: 70,
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     mb: 2
                   }}>
-                    <Box sx={{ color: feature.color }}>
+                    <Box sx={{ color: feature.color, fontSize: 32 }}>
                       {feature.icon}
                     </Box>
                   </Box>
                   
-                  <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
-                    {feature.title}
-                  </Typography>
-                  
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flexGrow: 1 }}>
-                    {feature.description}
-                  </Typography>
+                  <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                      {feature.title}
+                    </Typography>
+                    
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {feature.description}
+                    </Typography>
+                  </Box>
                   
                   <Button 
                     component={Link} 
@@ -229,69 +398,7 @@ const Home = () => {
         </Grid>
       </Box>
 
-      {/* Información del proyecto */}
-      <Card sx={{ backgroundColor: '#f8f9ff', mb: 4 }}>
-        <CardContent>
-          <Typography variant="h5" sx={{ mb: 3, color: "#6c63ff", display: 'flex', alignItems: 'center', gap: 1 }}>
-            <BuildIcon /> Acerca del Proyecto
-          </Typography>
-          
-          <Typography variant="body1" paragraph sx={{ textAlign: 'justify', mb: 3 }}>
-            Para la realización de este proyecto se utilizó{" "} 
-            <a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener noreferrer" style={{ color: '#6c63ff', fontWeight: 'bold' }}>
-              Spring Boot
-            </a> (para el backend),{" "}
-            <a href="https://reactjs.org/" target="_blank" rel="noopener noreferrer" style={{ color: '#6c63ff', fontWeight: 'bold' }}>
-              React
-            </a> (para el Frontend) y{" "}
-            <a href="https://www.mysql.com/products/community/" target="_blank" rel="noopener noreferrer" style={{ color: '#6c63ff', fontWeight: 'bold' }}>
-              MySQL
-            </a> (para la base de datos).
-          </Typography>
-          
-          <Divider sx={{ my: 2 }} />
-          
-          <Typography variant="h6" sx={{ mb: 2, color: "#6c63ff" }}>
-            Tecnologías Utilizadas
-          </Typography>
-          
-          <Grid container spacing={20}>
-            <Grid size={{ xs: 20, sm: 6 }}>
-              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', color: '#333' }}>
-                Backend
-              </Typography>
-              <Stack spacing={0.5}>
-                <Typography variant="body2">• Spring Boot 3.x - Framework Java</Typography>
-                <Typography variant="body2">• Spring Security - Autenticación y Autorización</Typography>
-                <Typography variant="body2">• JPA/Hibernate - Persistencia de datos</Typography>
-                <Typography variant="body2">• MySQL - Base de datos relacional</Typography>
-                <Typography variant="body2">• REST API - Servicios web</Typography>
-              </Stack>
-            </Grid>
-            
-            <Grid size={{ xs: 20, sm: 6 }}>
-              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold', color: '#333' }}>
-                Frontend
-              </Typography>
-              <Stack spacing={0.5}>
-                <Typography variant="body2">• React 18 - Biblioteca JavaScript</Typography>
-                <Typography variant="body2">• Material-UI (MUI) - Componentes UI</Typography>
-                <Typography variant="body2">• Keycloak - Gestión de identidad</Typography>
-                <Typography variant="body2">• React Router - Navegación</Typography>
-                <Typography variant="body2">• Axios - Cliente HTTP</Typography>
-              </Stack>
-            </Grid>
-          </Grid>
-          
-          <Box sx={{ mt: 3, p: 2, backgroundColor: '#eef2ff', borderRadius: 1 }}>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Beneficios del sistema:</strong> Control en tiempo real, reducción de errores, 
-              automatización de procesos, reportes automáticos y mejor experiencia de usuario.
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-
+      
       {/* Pie de página */}
       <Divider sx={{ my: 4 }} />
       

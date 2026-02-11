@@ -35,37 +35,37 @@ export default function Sidemenu({ open, toggleDrawer, userRole }) {
   // Define los items del menú
   const menuItems = [
     {
-      text: "Home",
+      text: "Inicio",
       icon: <HomeIcon />,
       path: "/home",
     },
     {
-      text: "Customers",
+      text: "Clientes",
       icon: <PeopleAltIcon />,
       path: "/customers",
     },
     {
-      text: "Tool Group",
+      text: "Grupos de Herramientas",
       icon: <HandymanIcon />,
       path: "/tools",
     },
     {
-      text: "Tool Unit",
+      text: "Unidades de Herramientas",
       icon: <BuildIcon />,
       path: "/tools/units",
     },
     {
-      text: "Loans",
+      text: "Préstamos",
       icon: <CreditScoreIcon />,
       path: "/loans",
     },
     {
-      text: "Tariffs",
+      text: "Tarifas",
       icon: <PaidIcon />,
       path: "/tariff",
     },
     {
-      text: "Reports",
+      text: "Reportes",
       icon: <ReceiptLongIcon />,
       path: "/reports",
     },
@@ -120,7 +120,7 @@ export default function Sidemenu({ open, toggleDrawer, userRole }) {
         </Box>
         
         <Chip
-          label={`Rol: ${userRole || 'No asignado'}`}
+          label={` ${userRole || 'No asignado'}`}
           size="small"
           sx={{ 
             background: 'rgba(255,255,255,0.2)',

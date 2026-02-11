@@ -362,6 +362,7 @@ const KardexView = () => {
                 <Button 
                   variant="outlined" 
                   onClick={clearFilters}
+                  startIcon={<RefreshIcon fontSize="small" />}
                   size="small"
                   fullWidth
                 >

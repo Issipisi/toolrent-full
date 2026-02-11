@@ -3,7 +3,8 @@ import toolGroupService from "../services/toolGroup.service";
 import { 
   Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   TextField, Typography, Stack, Dialog, DialogTitle, DialogContent, DialogActions,
-  Box, Chip, Alert, Grid, Card, CardContent, CircularProgress, MenuItem
+  Box, Chip, Alert, Grid, Card, CardContent, CircularProgress, MenuItem,
+  FormControl, InputLabel, Select
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import BuildIcon from '@mui/icons-material/Build';
@@ -11,6 +12,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CategoryIcon from '@mui/icons-material/Category';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SearchIcon from '@mui/icons-material/Search';
 
 const ToolGroupView = () => {
   const [groups, setGroups] = useState([]);
@@ -24,6 +26,10 @@ const ToolGroupView = () => {
     pricePerDay: "", 
     stock: ""
   });
+
+  // Nuevos estados para búsqueda y filtros
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("Todas");
 
   const loadGroups = async () => {
     setLoading(true);
@@ -74,6 +80,21 @@ const ToolGroupView = () => {
     availableStock: groups.reduce((sum, g) => sum + (g.availableCount || g.units?.filter(u => u.status === "AVAILABLE")?.length || 0), 0),
     categories: [...new Set(groups.map(g => g.category).filter(Boolean))].length
   };
+
+  // Obtener categorías únicas para filtro
+  const categories = ["Todas", ...new Set(groups.map(g => g.category).filter(Boolean))];
+
+  // Filtrar grupos
+  const filteredGroups = groups.filter(group => {
+    const matchesSearch = searchTerm === "" || 
+      group.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      group.category?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesCategory = filterCategory === "Todas" || 
+      group.category === filterCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
   useEffect(() => { 
     loadGroups(); 
@@ -144,7 +165,7 @@ const ToolGroupView = () => {
 
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 3}}>
+        <Grid item xs={12} sm={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#6c63ff" }}>
@@ -157,7 +178,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 3}}>
+        <Grid item xs={12} sm={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#4caf50" }}>
@@ -170,7 +191,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 3}}>
+        <Grid item xs={12} sm={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#2196f3" }}>
@@ -183,7 +204,7 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 3}}>
+        <Grid item xs={12} sm={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#ff9800" }}>
@@ -196,6 +217,45 @@ const ToolGroupView = () => {
           </Card>
         </Grid>
       </Grid>
+
+      {/* Filtros */}
+      <Box sx={{ 
+        display: 'flex', 
+        gap: 2, 
+        mb: 3,
+        flexWrap: 'wrap',
+        alignItems: 'center'
+      }}>
+        <TextField
+          placeholder="Buscar por nombre o categoría..."
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ width: 300 }}
+          InputProps={{
+            startAdornment: <SearchIcon sx={{ mr: 1, color: '#666' }} />
+          }}
+        />
+        
+        <FormControl size="small" sx={{ minWidth: 150 }}>
+          <InputLabel>Categoría</InputLabel>
+          <Select
+            value={filterCategory}
+            label="Categoría"
+            onChange={(e) => setFilterCategory(e.target.value)}
+          >
+            {categories.map(cat => (
+              <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        
+        <Chip 
+          label={`${filteredGroups.length} de ${groups.length}`} 
+          size="small"
+          variant="outlined"
+        />
+      </Box>
 
       {/* Tabla */}
       <TableContainer sx={{ maxHeight: '60vh', border: '1px solid #e0e0e0', borderRadius: 1 }}>
@@ -226,15 +286,31 @@ const ToolGroupView = () => {
                   <Typography sx={{ mt: 1, fontSize: '0.9rem' }}>Cargando grupos...</Typography>
                 </TableCell>
               </TableRow>
-            ) : groups.length === 0 ? (
+            ) : filteredGroups.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                   <InventoryIcon sx={{ fontSize: 40, color: '#e0e0e0', mb: 1 }} />
-                  <Typography color="text.secondary">No hay grupos registrados</Typography>
+                  <Typography color="text.secondary">
+                    {searchTerm || filterCategory !== "Todas" 
+                      ? "No se encontraron grupos con ese criterio" 
+                      : "No hay grupos registrados"}
+                  </Typography>
+                  {(searchTerm || filterCategory !== "Todas") && (
+                    <Button 
+                      size="small" 
+                      onClick={() => {
+                        setSearchTerm("");
+                        setFilterCategory("Todas");
+                      }}
+                      sx={{ mt: 1 }}
+                    >
+                      Limpiar filtros
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ) : (
-              groups.map((group) => {
+              filteredGroups.map((group) => {
                 const availableStock = calculateAvailableStock(group);
                 const dailyRate = getDailyRate(group);
                 const replacementValue = getReplacementValue(group);
@@ -329,7 +405,7 @@ const ToolGroupView = () => {
       </TableContainer>
 
       {/* Pie de tabla */}
-      {!loading && groups.length > 0 && (
+      {!loading && filteredGroups.length > 0 && (
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -339,7 +415,7 @@ const ToolGroupView = () => {
           borderTop: '1px solid #e0e0e0' 
         }}>
           <Typography variant="body2" color="text.secondary">
-            Mostrando {groups.length} grupos • {stats.availableStock} herramientas disponibles
+            Mostrando {filteredGroups.length} de {groups.length} grupos • {stats.availableStock} herramientas disponibles
           </Typography>
           <Typography variant="caption" color="text.secondary">
             Actualizado: {new Date().toLocaleTimeString()}
@@ -391,7 +467,7 @@ const ToolGroupView = () => {
             </TextField>
             
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6}}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   label="Tarifa Diaria ($)"
                   type="number"
@@ -403,7 +479,7 @@ const ToolGroupView = () => {
                   helperText="Precio por día de alquiler"
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6}}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   label="Valor de Reposición ($)"
                   type="number"

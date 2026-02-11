@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import BaseLayout from '../components/BaseLayout';
+import ScrollableTable from '../components/ScrollableTable';
 import loanService from "../services/loan.service";
 import customerService from "../services/customer.service";
 import toolGroupService from "../services/toolGroup.service";
 import {
-  Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Box, Button, Paper, Table, TableBody, TableCell, TableHead, TableRow,
   Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography,
   MenuItem, Stack, Chip, Alert, Grid, Card, CardContent,
-  Tooltip, CircularProgress
+  Tooltip, CircularProgress, DialogContentText, FormControl, InputLabel, Select
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -23,19 +25,31 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import PeopleIcon from '@mui/icons-material/People';
 import BuildIcon from '@mui/icons-material/Build';
 import ErrorIcon from '@mui/icons-material/Error';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import SearchIcon from '@mui/icons-material/Search';
+import SortIcon from '@mui/icons-material/Sort';
+import { useNotification } from "../components/NotificationProvider";
 
 const LoanView = () => {
   const [loans, setLoans] = useState([]);
   const [debts, setDebts] = useState([]);
   const [open, setOpen] = useState(false);
   const [openPreReturn, setOpenPreReturn] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [selectedLoanId, setSelectedLoanId] = useState(null);
   const [preDamageAmount, setPreDamageAmount] = useState("0");
   const [preIrreparable, setPreIrreparable] = useState(false);
   const [preDamageType, setPreDamageType] = useState("none");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const [formErrors, setFormErrors] = useState({});
+  
+  // Nuevos estados para ordenamiento y búsqueda
+  const [sortField, setSortField] = useState("dueDate");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("TODOS");
+  
+  const { showNotification } = useNotification();
 
   const [customers, setCustomers] = useState([]);
   const [tools, setTools] = useState([]);
@@ -56,7 +70,7 @@ const LoanView = () => {
         loadTools()
       ]);
     } catch (error) {
-      setMessage({ type: 'error', text: 'Error cargando datos' });
+      showNotification("Error cargando datos", "error");
     } finally {
       setLoading(false);
     }
@@ -64,7 +78,6 @@ const LoanView = () => {
 
   const loadActive = async () => {
     try {
-      // Compatible con ambas versiones del service
       const res = await loanService.getActive();
       const data = res.data || res || [];
       setLoans(Array.isArray(data) ? data : []);
@@ -76,7 +89,6 @@ const LoanView = () => {
 
   const loadPendingPayment = async () => {
     try {
-      // Compatible con ambas versiones del service
       const res = await loanService.getPendingPayment();
       const data = res.data || res || [];
       setDebts(Array.isArray(data) ? data : []);
@@ -88,7 +100,6 @@ const LoanView = () => {
 
   const loadCustomers = async () => {
     try {
-      // Compatible con ambas versiones del service
       const res = await customerService.getActive();
       const data = res.data || res || [];
       setCustomers(Array.isArray(data) ? data.filter(c => c.name !== "Sistema") : []);
@@ -100,7 +111,6 @@ const LoanView = () => {
 
   const loadTools = async () => {
     try {
-      // Compatible con ambas versiones del service
       const res = await toolGroupService.getAvailable();
       const data = res.data || res || [];
       setTools(Array.isArray(data) ? data : []);
@@ -121,45 +131,71 @@ const LoanView = () => {
     return () => window.removeEventListener("debtUpdated", handleDebtUpdate);
   }, []);
 
+  /* ---------- VALIDACIONES ---------- */
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!form.customerId) {
+      errors.customerId = "Selecciona un cliente";
+    }
+    
+    if (!form.toolGroupId) {
+      errors.toolGroupId = "Selecciona una herramienta";
+    }
+    
+    if (form.dueDate && dayjs(form.dueDate).isBefore(dayjs())) {
+      errors.dueDate = "La fecha de entrega no puede ser anterior a hoy";
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   /* ---------- HANDLERS ---------- */
   const handleRegister = async () => {
+    if (!validateForm()) {
+      showNotification("Corrige los errores en el formulario", "warning");
+      return;
+    }
+
     try {
-      // Mantener compatibilidad con versiones antiguas del service
-      if (typeof loanService.register === 'function') {
-        // Versión antigua: register(toolGroupId, customerId, dueDate)
-        await loanService.register(
-          form.toolGroupId,
-          form.customerId,
-          form.dueDate.format("YYYY-MM-DDTHH:mm:ss")
-        );
-      }
-      
-      console.log('1. Antes de setMessage');
-      setMessage({ type: 'success', text: '✅ Préstamo registrado exitosamente' });
-      
-      console.log('2. Mensaje establecido:', message); // OJO: esto mostrará el estado anterior
+      await loanService.register(
+        form.toolGroupId,
+        form.customerId,
+        form.dueDate.format("YYYY-MM-DDTHH:mm:ss")
+      );
 
-       // Para ver el estado actual, usa un useEffect o timeout
-      setTimeout(() => {
-        console.log('3. Estado actual de message:', message);
-      }, 0);
-
+      showNotification("Préstamo registrado exitosamente", "success");
       setOpen(false);
       setForm({ customerId: "", toolGroupId: "", dueDate: dayjs().add(7, 'day') });
-
-      console.log('4. Después de setOpen');
-
+      setFormErrors({});
       loadAll();
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
-      const msg = error.response?.data?.message || error.response?.data || error.message || "Error desconocido";
-      setMessage({ type: 'error', text: `❌ No se puede registrar: ${msg}` });
+      let userMessage = "Error al registrar préstamo";
+      const msg = error.response?.data?.message || error.response?.data || error.message;
+      const errorMsg = msg.toString().toLowerCase();
+      
+      if (errorMsg.includes("cliente con deuda") || errorMsg.includes("deuda") || errorMsg.includes("impaga")) {
+        userMessage = "Cliente tiene deudas pendientes. Debe pagar antes de nuevo préstamo.";
+      } else if (errorMsg.includes("préstamo vencido") || errorMsg.includes("atrasado")) {
+        userMessage = "Cliente tiene préstamos vencidos sin devolver";
+      } else if (errorMsg.includes("límite") || errorMsg.includes("activos") || errorMsg.includes("5")) {
+        userMessage = "Cliente alcanzó el límite máximo de préstamos simultáneos (5)";
+      } else if (errorMsg.includes("misma herramienta") || errorMsg.includes("ya tiene")) {
+        userMessage = "El cliente ya tiene esta herramienta en préstamo. Debe devolverla primero.";
+      } else if (errorMsg.includes("fecha") || errorMsg.includes("anterior")) {
+        userMessage = "La fecha de devolución no puede ser anterior a la fecha actual";
+      } else {
+        userMessage = `Error: ${msg}`;
+      }
+      
+      showNotification(userMessage, "error");
     }
   };
 
   const handlePreReturn = (loanId) => {
+    setSelectedLoanId(loanId);
     setOpenPreReturn(true);
-    sessionStorage.setItem("pendingReturnId", loanId);
   };
 
   const handleDamageTypeChange = (e) => {
@@ -177,64 +213,59 @@ const LoanView = () => {
   };
 
   const handleConfirmReturn = async () => {
-    const loanId = sessionStorage.getItem("pendingReturnId");
+    if (!selectedLoanId) return;
+    
     const amount = preIrreparable ? 0 : parseFloat(preDamageAmount);
     
     try {
-      // Compatible con versiones antiguas del service
-      if (typeof loanService.returnLoan === 'function') {
-        await loanService.returnLoan(loanId, amount, preIrreparable);
-      }
+      await loanService.returnLoan(selectedLoanId, amount, preIrreparable);
 
-      if (preDamageType === "leve" && amount > 0) {
-        const loan = loans.find(l => l.id == loanId);
-        if (loan?.toolUnitId && typeof loanService.sendToRepair === 'function') {
-          await loanService.sendToRepair(loan.toolUnitId);
-        }
+      let message = "Devolución registrada exitosamente";
+      if (preDamageType === "irreparable") {
+        message += " - Herramienta dada de baja";
+      } else if (preDamageType === "leve" && amount > 0) {
+        message += " - Daño leve registrado";
       }
-
-      setMessage({ type: 'success', text: '✅ Devolución registrada exitosamente' });
+      
+      showNotification(message, "success");
       setOpenPreReturn(false);
       setPreDamageAmount("0");
       setPreIrreparable(false);
       setPreDamageType("none");
+      setSelectedLoanId(null);
       loadAll();
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
-      const msg = error.response?.data?.message || error.response?.data || error.message || "Error desconocido";
-      setMessage({ type: 'error', text: `❌ Error en devolución: ${msg}` });
+      showNotification("Error al registrar devolución", "error");
     }
   };
 
-  const handlePayDebts = async (loanId) => {
-    if (!confirm("¿Marcar como pagadas las deudas de este préstamo?")) return;
+  const handleOpenConfirm = (loanId) => {
+    setSelectedLoanId(loanId);
+    setOpenConfirm(true);
+  };
+
+  const handlePayDebts = async () => {
+    if (!selectedLoanId) return;
+    
     try {
-      // Compatible con versiones antiguas del service
-      if (typeof loanService.payDebts === 'function') {
-        await loanService.payDebts(loanId);
-      }
-      
-      setMessage({ type: 'success', text: '✅ Deudas pagadas exitosamente' });
+      await loanService.payDebts(selectedLoanId);
+      showNotification("Deudas marcadas como pagadas", "success");
+      setOpenConfirm(false);
+      setSelectedLoanId(null);
       loadPendingPayment();
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
-      const msg = error.response?.data?.message || error.response?.data || error.message || "Error desconocido";
-      setMessage({ type: 'error', text: `❌ Error pagando deudas: ${msg}` });
+      showNotification("Error al procesar pago", "error");
     }
   };
 
-  // Estadísticas
-  const stats = {
-    totalActive: loans.length,
-    totalDebts: debts.length,
-    totalDebtAmount: debts.reduce((sum, d) => sum + (d.fineAmount || 0) + (d.damageCharge || 0), 0),
-    overdueLoans: loans.filter(l => dayjs(l.dueDate).isBefore(dayjs())).length
-  };
-
-  // Formatear fecha
-  const formatDate = (dateString) => {
-    if (!dateString) return "Sin fecha";
-    return dayjs(dateString).format('DD/MM/YYYY HH:mm');
+  /* ---------- FUNCIONES DE ORDENAMIENTO Y BÚSQUEDA ---------- */
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
   };
 
   // Verificar si préstamo está vencido
@@ -243,13 +274,87 @@ const LoanView = () => {
     return dayjs(dueDate).isBefore(dayjs());
   };
 
+  // Verificar si préstamo está por vencer (menos de 24h)
+  const isDueSoon = (dueDate) => {
+    if (!dueDate || isOverdue(dueDate)) return false;
+    const due = dayjs(dueDate);
+    const now = dayjs();
+    const hoursUntilDue = due.diff(now, 'hour');
+    return hoursUntilDue > 0 && hoursUntilDue <= 24;
+  };
+
+  // Filtrar y ordenar préstamos
+  const sortedLoans = useMemo(() => {
+    let filtered = [...loans];
+    
+    // Aplicar filtro de búsqueda
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(loan =>
+        loan.customerName?.toLowerCase().includes(term) ||
+        loan.toolName?.toLowerCase().includes(term)
+      );
+    }
+    
+    // Aplicar filtro de estado
+    if (filterStatus !== "TODOS") {
+      filtered = filtered.filter(loan => {
+        if (filterStatus === "VENCIDO") return isOverdue(loan.dueDate);
+        if (filterStatus === "POR_VENCER") return isDueSoon(loan.dueDate);
+        if (filterStatus === "ACTIVO") return !isOverdue(loan.dueDate) && !isDueSoon(loan.dueDate);
+        return true;
+      });
+    }
+    
+    // Ordenar
+    filtered.sort((a, b) => {
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+      
+      // Manejar fechas
+      if (sortField === "loanDate" || sortField === "dueDate") {
+        aValue = dayjs(aValue);
+        bValue = dayjs(bValue);
+      }
+      
+      // Manejar strings
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+      
+      if (sortDirection === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+    
+    return filtered;
+  }, [loans, sortField, sortDirection, searchTerm, filterStatus]);
+
+  // Estadísticas
+  const stats = {
+    totalActive: loans.length,
+    totalDebts: debts.length,
+    totalDebtAmount: debts.reduce((sum, d) => sum + (d.fineAmount || 0) + (d.damageCharge || 0), 0),
+    overdueLoans: loans.filter(l => isOverdue(l.dueDate)).length,
+    dueSoonLoans: loans.filter(l => isDueSoon(l.dueDate)).length
+  };
+
+  // Formatear fecha
+  const formatDate = (dateString) => {
+    if (!dateString) return "Sin fecha";
+    return dayjs(dateString).format('DD/MM/YYYY HH:mm');
+  };
+
   // Formato de moneda
   const formatCurrency = (amount) => {
     return `$${(amount || 0).toLocaleString()}`;
   };
 
   return (
-    <Paper sx={{ p: 4, background: "#ffffff" }}>
+     <BaseLayout>
       {/* Encabezado */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box>
@@ -261,44 +366,37 @@ const LoanView = () => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={1}>
-          <Button 
-            variant="outlined" 
-            startIcon={<RefreshIcon />}
-            onClick={loadAll}
-            disabled={loading}
-            size="small"
-          >
-            Actualizar
-          </Button>
-          <Button 
-            variant="contained" 
-            startIcon={<AddIcon />}
-            onClick={() => setOpen(true)}
-            sx={{ 
-              background: "#6c63ff",
-              "&:hover": { background: "#5a52d5" }
-            }}
-            size="small"
-          >
-            Nuevo Préstamo
-          </Button>
+          <Tooltip title="Actualizar datos">
+            <Button 
+              variant="outlined" 
+              startIcon={<RefreshIcon />}
+              onClick={loadAll}
+              disabled={loading}
+              size="small"
+            >
+              Actualizar
+            </Button>
+          </Tooltip>
+          <Tooltip title="Registrar nuevo préstamo">
+            <Button 
+              variant="contained" 
+              startIcon={<AddIcon />}
+              onClick={() => setOpen(true)}
+              sx={{ 
+                background: "#6c63ff",
+                "&:hover": { background: "#5a52d5" }
+              }}
+              size="small"
+            >
+              Nuevo Préstamo
+            </Button>
+          </Tooltip>
         </Stack>
       </Box>
 
-      {/* Mensajes */}
-      {message.text && (
-        <Alert 
-          severity={message.type} 
-          sx={{ mb: 3 }}
-          onClose={() => setMessage({ type: '', text: '' })}
-        >
-          {message.text}
-        </Alert>
-      )}
-
       {/* Estadísticas */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 3 }}>
+        <Grid item xs={12} sm={6} md={2.4}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#6c63ff" }}>
@@ -311,23 +409,36 @@ const LoanView = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 3 }}>
+        <Grid item xs={12} sm={6} md={2.4}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#f44336" }}>
                 {stats.overdueLoans}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Préstamos Vencidos
+                Vencidos
               </Typography>
             </CardContent>
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 3 }}>
+        <Grid item xs={12} sm={6} md={2.4}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" sx={{ color: "#ff9800" }}>
+                {stats.dueSoonLoans}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Por Vencer
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        
+        <Grid item xs={12} sm={6} md={2.4}>
+          <Card>
+            <CardContent sx={{ textAlign: 'center', py: 2 }}>
+              <Typography variant="h4" sx={{ color: "#9c27b0" }}>
                 {stats.totalDebts}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -336,11 +447,11 @@ const LoanView = () => {
             </CardContent>
           </Card>
         </Grid>
-        
-        <Grid size={{ xs: 12, sm: 3 }}>
+
+        <Grid item xs={12} sm={6} md={2.4}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
-              <Typography variant="h4" sx={{ color: "#9c27b0" }}>
+              <Typography variant="h4" sx={{ color: "#4caf50" }}>
                 {formatCurrency(stats.totalDebtAmount)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -352,24 +463,54 @@ const LoanView = () => {
       </Grid>
 
       {/* ---------- PRÉSTAMOS ACTIVOS ---------- */}
-      <Card sx={{ mb: 4, border: '1px solid #e0e0e0' }}>
-        <CardContent>
+      <Card sx={{ mb: 4, border: '1px solid #e0e0e0', flex: 1 }}>
+        <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h5" sx={{ color: "#6c63ff", display: 'flex', alignItems: 'center', gap: 1 }}>
               <CheckCircleIcon /> Préstamos Activos
             </Typography>
-            <Chip 
-              label={`${loans.length} activos`} 
-              sx={{ 
-                backgroundColor: '#6c63ff',
-                color: 'white',
-                fontWeight: 'bold'
-              }}
-              size="small" 
-            />
+            
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              {/* Barra de búsqueda */}
+              <TextField
+                placeholder="Buscar por cliente o herramienta..."
+                size="small"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                sx={{ width: 250 }}
+                InputProps={{
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: '#666' }} />
+                }}
+              />
+              
+              {/* Filtro de estado */}
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel>Estado</InputLabel>
+                <Select
+                  value={filterStatus}
+                  label="Estado"
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <MenuItem value="TODOS">Todos</MenuItem>
+                  <MenuItem value="ACTIVO">Activos</MenuItem>
+                  <MenuItem value="POR_VENCER">Por Vencer</MenuItem>
+                  <MenuItem value="VENCIDO">Vencidos</MenuItem>
+                </Select>
+              </FormControl>
+              
+              <Chip 
+                label={`${sortedLoans.length} activos`} 
+                sx={{ 
+                  backgroundColor: '#6c63ff',
+                  color: 'white',
+                  fontWeight: 'bold'
+                }}
+                size="small" 
+              />
+            </Box>
           </Box>
           
-          <TableContainer sx={{ maxHeight: 400, borderRadius: 1 }}>
+          <ScrollableTable maxHeight="400px">
             <Table stickyHeader>
               <TableHead>
                 <TableRow sx={{ 
@@ -377,13 +518,46 @@ const LoanView = () => {
                     backgroundColor: '#6c63ff', 
                     color: 'white',
                     fontWeight: 'bold',
-                    fontSize: '0.95rem'
+                    fontSize: '0.9rem'
                   }
                 }}>
-                  <TableCell>Cliente</TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <SortIcon fontSize="small" />
+                      <Button 
+                        size="small" 
+                        onClick={() => handleSort("customerName")}
+                        sx={{ color: 'white', textTransform: 'none', fontWeight: 'bold' }}
+                      >
+                        Cliente {sortField === "customerName" && (sortDirection === "asc" ? "↑" : "↓")}
+                      </Button>
+                    </Box>
+                  </TableCell>
                   <TableCell>Herramienta</TableCell>
-                  <TableCell width="150px">Fecha Préstamo</TableCell>
-                  <TableCell width="150px">Fecha Entrega</TableCell>
+                  <TableCell width="150px">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <SortIcon fontSize="small" />
+                      <Button 
+                        size="small" 
+                        onClick={() => handleSort("loanDate")}
+                        sx={{ color: 'white', textTransform: 'none', fontWeight: 'bold' }}
+                      >
+                        Fecha Préstamo {sortField === "loanDate" && (sortDirection === "asc" ? "↑" : "↓")}
+                      </Button>
+                    </Box>
+                  </TableCell>
+                  <TableCell width="150px">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <SortIcon fontSize="small" />
+                      <Button 
+                        size="small" 
+                        onClick={() => handleSort("dueDate")}
+                        sx={{ color: 'white', textTransform: 'none', fontWeight: 'bold' }}
+                      >
+                        Fecha Entrega {sortField === "dueDate" && (sortDirection === "asc" ? "↑" : "↓")}
+                      </Button>
+                    </Box>
+                  </TableCell>
                   <TableCell width="100px">Estado</TableCell>
                   <TableCell width="120px">Acciones</TableCell>
                 </TableRow>
@@ -392,26 +566,43 @@ const LoanView = () => {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                    <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                       <CircularProgress size={24} />
                       <Typography sx={{ mt: 1, fontSize: '0.9rem' }}>Cargando préstamos...</Typography>
                     </TableCell>
                   </TableRow>
-                ) : loans.length === 0 ? (
+                ) : sortedLoans.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                    <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                       <InventoryIcon sx={{ fontSize: 40, color: '#e0e0e0', mb: 1 }} />
-                      <Typography color="text.secondary">No hay préstamos activos</Typography>
+                      <Typography color="text.secondary">
+                        {searchTerm || filterStatus !== "TODOS" 
+                          ? "No se encontraron préstamos con ese criterio" 
+                          : "No hay préstamos activos"}
+                      </Typography>
+                      {(searchTerm || filterStatus !== "TODOS") && (
+                        <Button 
+                          size="small" 
+                          onClick={() => {
+                            setSearchTerm("");
+                            setFilterStatus("TODOS");
+                          }}
+                          sx={{ mt: 1 }}
+                        >
+                          Limpiar filtros
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ) : (
-                  loans.map((loan) => (
+                  sortedLoans.map((loan) => (
                     <TableRow 
                       key={loan.id} 
                       hover 
                       sx={{ 
                         '&:hover': { backgroundColor: '#f5f0ff' },
-                        backgroundColor: isOverdue(loan.dueDate) ? '#ffebee' : 'inherit'
+                        backgroundColor: isOverdue(loan.dueDate) ? '#ffebee' : 
+                                         isDueSoon(loan.dueDate) ? '#fff8e1' : 'inherit'
                       }}
                     >
                       <TableCell>
@@ -439,31 +630,44 @@ const LoanView = () => {
                       <TableCell sx={{ 
                         fontFamily: 'monospace', 
                         fontSize: '0.85rem',
-                        color: isOverdue(loan.dueDate) ? '#f44336' : 'inherit',
-                        fontWeight: isOverdue(loan.dueDate) ? 'bold' : 'normal'
+                        color: isOverdue(loan.dueDate) ? '#f44336' : 
+                               isDueSoon(loan.dueDate) ? '#ff9800' : 'inherit',
+                        fontWeight: (isOverdue(loan.dueDate) || isDueSoon(loan.dueDate)) ? 'bold' : 'normal'
                       }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                           <ScheduleIcon fontSize="small" />
                           {formatDate(loan.dueDate)}
+                          {isDueSoon(loan.dueDate) && (
+                            <Typography variant="caption" sx={{ ml: 1, color: '#ff9800' }}>
+                              ⏰
+                            </Typography>
+                          )}
                         </Box>
                       </TableCell>
                       
                       <TableCell>
                         <Chip 
-                          label={isOverdue(loan.dueDate) ? "VENCIDO" : "ACTIVO"} 
+                          label={
+                            isOverdue(loan.dueDate) ? "VENCIDO" : 
+                            isDueSoon(loan.dueDate) ? "POR VENCER" : "ACTIVO"
+                          } 
                           size="small"
                           sx={{
-                            backgroundColor: isOverdue(loan.dueDate) ? '#f44336' : '#4caf50',
+                            backgroundColor: isOverdue(loan.dueDate) ? '#f44336' : 
+                                             isDueSoon(loan.dueDate) ? '#ff9800' : '#4caf50',
                             color: 'white',
                             fontWeight: 'bold',
                             fontSize: '0.75rem'
                           }}
-                          icon={isOverdue(loan.dueDate) ? <WarningIcon /> : <CheckCircleIcon />}
+                          icon={
+                            isOverdue(loan.dueDate) ? <WarningIcon /> : 
+                            isDueSoon(loan.dueDate) ? <ScheduleIcon /> : <CheckCircleIcon />
+                          }
                         />
                       </TableCell>
                       
                       <TableCell>
-                        <Tooltip title="Registrar Devolución">
+                        <Tooltip title="Registrar devolución">
                           <Button
                             size="small"
                             variant="outlined"
@@ -488,12 +692,12 @@ const LoanView = () => {
                 )}
               </TableBody>
             </Table>
-          </TableContainer>
+          </ScrollableTable>
         </CardContent>
       </Card>
 
       {/* ---------- PENDIENTES DE PAGO ---------- */}
-      <Card sx={{ border: '1px solid #e0e0e0' }}>
+      <Card sx={{ border: '1px solid #e0e0e0', mt: 2 }}>
         <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h5" sx={{ color: "#f44336", display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -510,7 +714,7 @@ const LoanView = () => {
             />
           </Box>
           
-          <TableContainer sx={{ maxHeight: 400, borderRadius: 1 }}>
+          <ScrollableTable maxHeight="400px">
             <Table stickyHeader>
               <TableHead>
                 <TableRow sx={{ 
@@ -518,7 +722,7 @@ const LoanView = () => {
                     backgroundColor: '#f44336', 
                     color: 'white',
                     fontWeight: 'bold',
-                    fontSize: '0.95rem'
+                    fontSize: '0.9rem'
                   }
                 }}>
                   <TableCell>Cliente</TableCell>
@@ -534,16 +738,18 @@ const LoanView = () => {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                    <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
                       <CircularProgress size={24} />
                       <Typography sx={{ mt: 1, fontSize: '0.9rem' }}>Cargando deudas...</Typography>
                     </TableCell>
                   </TableRow>
                 ) : debts.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
-                      <PaidIcon sx={{ fontSize: 40, color: '#e0e0e0', mb: 1 }} />
-                      <Typography color="text.secondary">No hay deudas pendientes</Typography>
+                    <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <PaidIcon sx={{ fontSize: 40, color: '#e0e0e0', mb: 1 }} />
+                        <Typography color="text.secondary">No hay deudas pendientes</Typography>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -629,12 +835,12 @@ const LoanView = () => {
                         </TableCell>
                         
                         <TableCell>
-                          <Tooltip title="Marcar como pagado">
+                          <Tooltip title="Marcar deudas como pagadas">
                             <Button
                               size="small"
                               variant="contained"
                               startIcon={<PaidIcon />}
-                              onClick={() => handlePayDebts(debt.id)}
+                              onClick={() => handleOpenConfirm(debt.id)}
                               sx={{ 
                                 textTransform: 'none',
                                 backgroundColor: '#4caf50',
@@ -651,7 +857,7 @@ const LoanView = () => {
                 )}
               </TableBody>
             </Table>
-          </TableContainer>
+          </ScrollableTable>
           
           {debts.length > 0 && (
             <Box sx={{ 
@@ -663,7 +869,7 @@ const LoanView = () => {
               borderTop: '1px solid #e0e0e0' 
             }}>
               <Typography variant="body2" color="text.secondary">
-                Total de deuda pendiente: <strong>{formatCurrency(stats.totalDebtAmount)}</strong>
+                Total deuda pendiente: <strong>{formatCurrency(stats.totalDebtAmount)}</strong>
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 Actualizado: {dayjs().format('HH:mm')}
@@ -689,12 +895,14 @@ const LoanView = () => {
           <Stack spacing={2}>
             <TextField 
               select 
-              label="Cliente"
+              label="Cliente *"
               value={form.customerId}
               onChange={(e) => setForm({ ...form, customerId: e.target.value })}
               fullWidth
               required
               margin="normal"
+              error={!!formErrors.customerId}
+              helperText={formErrors.customerId}
             >
               <MenuItem value="">
                 -- Seleccionar cliente --
@@ -702,41 +910,46 @@ const LoanView = () => {
               {customers.map((c) => (
                 <MenuItem key={c.id} value={c.id}>
                   {c.name} ‑ {c.rut}
+                  {c.debt && c.debt > 0 && ` (Deuda: $${c.debt.toLocaleString()})`}
                 </MenuItem>
               ))}
             </TextField>
             
             <TextField 
               select 
-              label="Grupo de Herramientas"
+              label="Grupo de Herramientas *"
               value={form.toolGroupId}
               onChange={(e) => setForm({ ...form, toolGroupId: e.target.value })}
               fullWidth
               required
               margin="normal"
+              error={!!formErrors.toolGroupId}
+              helperText={formErrors.toolGroupId}
             >
               <MenuItem value="">
                 -- Seleccionar herramienta --
               </MenuItem>
               {tools.map((t) => (
                 <MenuItem key={t.id} value={t.id}>
-                  {t.name} ({t.category})
+                  {t.name} ({t.category}) 
                 </MenuItem>
               ))}
             </TextField>
             
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Fecha de Entrega Pactada"
+                label="Fecha de Entrega Pactada *"
                 value={form.dueDate}
                 onChange={(newVal) => setForm({ ...form, dueDate: newVal })}
                 slotProps={{ 
                   textField: { 
                     fullWidth: true,
                     margin: "normal",
-                    helperText: "Fecha límite para la devolución"
+                    helperText: formErrors.dueDate || "Fecha límite para la devolución",
+                    error: !!formErrors.dueDate
                   } 
                 }}
+                minDateTime={dayjs().add(1, 'hour')}
               />
             </LocalizationProvider>
           </Stack>
@@ -780,7 +993,7 @@ const LoanView = () => {
             
             <TextField
               select
-              label="Estado de la Herramienta"
+              label="Estado de la Herramienta *"
               value={preDamageType}
               onChange={handleDamageTypeChange}
               fullWidth
@@ -815,12 +1028,22 @@ const LoanView = () => {
                 fullWidth
                 margin="normal"
                 helperText="Costo estimado de reparación"
+                InputProps={{
+                  startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                }}
               />
             )}
             
             {preDamageType === "irreparable" && (
-              <Alert severity="warning">
-                La herramienta será dada de baja y se cobrará el valor de reposición al cliente.
+              <Alert severity="warning" sx={{ mt: 1 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                  Atención: Esta acción no se puede deshacer
+                </Typography>
+                <Typography variant="body2">
+                  • La herramienta será dada de baja permanentemente<br/>
+                  • Se cobrará el valor de reposición al cliente<br/>
+                  • Se actualizará el inventario automáticamente
+                </Typography>
               </Alert>
             )}
           </Stack>
@@ -844,12 +1067,42 @@ const LoanView = () => {
               }
             }}
           >
-            {preDamageType === "irreparable" ? "Registrar Baja" : 
+            {preDamageType === "irreparable" ? "Confirmar Baja" : 
              preDamageType === "leve" ? "Registrar con Daño" : "Confirmar Devolución"}
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+
+      {/* Modal de confirmación para pagar deudas */}
+      <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)} maxWidth="sm">
+        <DialogTitle>Confirmar Pago de Deudas</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Estás seguro de marcar estas deudas como pagadas?
+            <br/><br/>
+            Esta acción:
+            <ul>
+              <li>Actualizará el estado financiero del cliente</li>
+              <li>Eliminará las restricciones por deudas pendientes</li>
+              <li>No se puede deshacer</li>
+            </ul>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirm(false)} sx={{ color: "#666" }}>
+            Cancelar
+          </Button>
+          <Button 
+            onClick={handlePayDebts} 
+            variant="contained" 
+            color="success"
+            startIcon={<PaidIcon />}
+          >
+            Confirmar Pago
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </BaseLayout>
   );
 };
 
