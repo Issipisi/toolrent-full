@@ -36,7 +36,7 @@ export const options = {
   },
   thresholds: {
     http_req_failed: ['rate<0.01'],
-    http_req_duration: ['p(95)<2000'], // Aumentado a 2s para reportes
+    http_req_duration: ['p(95)<1500'], // Bajado a 1.5s
   },
 };
 
@@ -45,7 +45,6 @@ const BASE_URL = 'http://10.252.181.173:8090';
 export function setup() {
   try {
     const token = getAuthToken('employee');
-    console.log(' Token obtenido para épica 6 load testing');
     return { token };
   } catch (error) {
     console.error(' Error obteniendo token:', error);
@@ -58,14 +57,16 @@ export default function(data) {
   
   const headers = getAuthHeaders(data.token);
   
-  // Fechas para filtrar (formato ISO DateTime)
   const from = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const to = new Date().toISOString();
   
-  // ===== TEST 1: Reporte de préstamos activos con filtro =====
+  // ===== TEST 1: Reporte de préstamos activos =====
   const res1 = http.get(
     `${BASE_URL}/reports/active-loans?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
-    { headers }
+    { 
+      headers,
+      tags: { name: 'ReportsActive' }
+    }
   );
   check(res1, {
     'GET /reports/active-loans status 200': (r) => r.status === 200,
@@ -73,10 +74,13 @@ export default function(data) {
 
   sleep(1);
 
-  // ===== TEST 2: Reporte top herramientas con filtro =====
+  // ===== TEST 2: Reporte top herramientas =====
   const res2 = http.get(
     `${BASE_URL}/reports/top-tools?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
-    { headers }
+    { 
+      headers,
+      tags: { name: 'ReportsTop' }
+    }
   );
   check(res2, {
     'GET /reports/top-tools status 200': (r) => r.status === 200,
@@ -84,8 +88,14 @@ export default function(data) {
 
   sleep(1);
 
-  // ===== TEST 3: Clientes con deudas (sin filtro) =====
-  const res3 = http.get(`${BASE_URL}/reports/customers-with-debt`, { headers });
+  // ===== TEST 3: Clientes con deudas =====
+  const res3 = http.get(
+    `${BASE_URL}/reports/customers-with-debt`,
+    { 
+      headers,
+      tags: { name: 'ReportsDebt' }
+    }
+  );
   check(res3, {
     'GET /reports/customers-with-debt status 200': (r) => r.status === 200,
   });

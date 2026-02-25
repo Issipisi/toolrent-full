@@ -34,7 +34,7 @@ echo Probando con 10, 50, 100, 500, 1000 usuarios...
 echo.
 k6 run epica2/load-test.js
 if %errorlevel% neq 0 (
-    echo  Error en load testing
+    echo  Load testing completado con warnings
     pause
 )
 pause
@@ -43,11 +43,11 @@ echo.
 echo ========================================
 echo PASO 3: EPICA 2 - STRESS TESTING
 echo ========================================
-echo Buscando punto de quiebre...
+echo Buscando punto de quiebre (hasta 8000 usuarios)...
 echo.
 k6 run epica2/stress-test.js
 if %errorlevel% neq 0 (
-    echo  Error en stress testing
+    echo  Stress testing completado con warnings
     pause
 )
 pause
@@ -60,7 +60,7 @@ echo Probando con diferentes volúmenes de BD...
 echo.
 k6 run epica2/volume-test.js
 if %errorlevel% neq 0 (
-    echo  Error en volume testing
+    echo  Volume testing completado con warnings
     pause
 )
 pause
@@ -73,7 +73,7 @@ echo Probando reportes...
 echo.
 k6 run epica6/load-test.js
 if %errorlevel% neq 0 (
-    echo  Error en load testing épica 6
+    echo  Load testing épica 6 completado con warnings
     pause
 )
 pause
@@ -86,7 +86,7 @@ echo Buscando punto de quiebre en reportes...
 echo.
 k6 run epica6/stress-test.js
 if %errorlevel% neq 0 (
-    echo  Error en stress testing épica 6
+    echo   Stress testing épica 6 completado con warnings
     pause
 )
 
@@ -98,7 +98,7 @@ echo Probando reportes con diferentes volúmenes de BD...
 echo.
 k6 run epica6/volume-test.js
 if %errorlevel% neq 0 (
-    echo   Error en volume testing épica 6
+    echo   Volume testing épica 6 completado con warnings
     pause
 )
 

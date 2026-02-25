@@ -4,14 +4,12 @@ import { getAuthToken, getAuthHeaders } from '../auth-helper.js';
 
 export const options = {
   scenarios: {
-    // Volumen bajo: 1000 registros
     low_volume: {
       executor: 'constant-vus',
       vus: 10,
       duration: '30s',
       env: { DB_SIZE: '1000' },
     },
-    // Volumen medio: 10000 registros
     medium_volume: {
       executor: 'constant-vus',
       vus: 10,
@@ -19,7 +17,6 @@ export const options = {
       startTime: '30s',
       env: { DB_SIZE: '10000' },
     },
-    // Volumen alto: 50000 registros
     high_volume: {
       executor: 'constant-vus',
       vus: 10,
@@ -27,7 +24,6 @@ export const options = {
       startTime: '60s',
       env: { DB_SIZE: '50000' },
     },
-    // Volumen muy alto: 100000 registros
     extreme_volume: {
       executor: 'constant-vus',
       vus: 10,
@@ -37,11 +33,10 @@ export const options = {
     },
   },
   thresholds: {
-    http_req_duration: ['p(95)<1000'], // < 1s
+    http_req_duration: ['p(95)<200'], // Bajamos umbral a 200ms
   },
 };
 
-// TU BACKEND
 const BASE_URL = 'http://10.252.181.173:8090';
 
 export function setup() {
@@ -49,7 +44,7 @@ export function setup() {
     const token = getAuthToken('employee');
     return { token };
   } catch (error) {
-    console.error('❌ Error en setup:', error);
+    console.error(' Error en setup:', error);
     return { token: null };
   }
 }
@@ -59,15 +54,23 @@ export default function(data) {
   
   const headers = getAuthHeaders(data.token);
   
-  // Para volume testing, usamos endpoints que devuelven muchos datos
-  const res = http.get(`${BASE_URL}/loans/active`, { headers });
+  // Fechas fijas para consistencia en volume testing
+  const from = '2024-01-01T00:00:00';
+  const to = '2024-12-31T23:59:59';
+  
+  const res = http.get(
+    `${BASE_URL}/loans/active?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+    { 
+      headers,
+      tags: { name: 'LoansActive' }
+    }
+  );
   
   check(res, {
     'status 200': (r) => r.status === 200,
   });
 
-  // Analizar tiempo según volumen
-  console.log(`📊 Volumen BD: ${__ENV.DB_SIZE}, Tiempo: ${res.timings.duration}ms`);
+  console.log(` Volumen BD: ${__ENV.DB_SIZE}, Tiempo: ${res.timings.duration}ms`);
 
   sleep(1);
 }
