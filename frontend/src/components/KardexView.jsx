@@ -1,27 +1,8 @@
 import { useEffect, useState } from "react";
 import kardexService from "../services/kardex.service";
 import toolGroupService from "../services/toolGroup.service";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Stack,
-  TextField,
-  MenuItem,
-  Button,
-  Box,
-  Chip,
-  CircularProgress,
-  Card,
-  CardContent,
-  Grid,
-  Alert
-} from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Stack, TextField, MenuItem,
+  Button, Box, Chip, CircularProgress, Card, CardContent, Grid, Alert } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -210,6 +191,7 @@ const KardexView = () => {
           onClick={loadAllMovements}
           disabled={loading}
           variant="outlined"
+          aria-label="Actualizar lista de movimientos del kárdex"
         >
           Actualizar
         </Button>
@@ -287,6 +269,7 @@ const KardexView = () => {
                 value={selectedTool}
                 onChange={(e) => setSelectedTool(e.target.value)}
                 size="small"
+                aria-label="Filtrar movimientos por herramienta específica"
               >
                 <MenuItem value="">Todas las herramientas</MenuItem>
                 {tools.map((t) => (
@@ -306,6 +289,7 @@ const KardexView = () => {
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
                 size="small"
+                aria-label="Filtrar movimientos por tipo de operación"
               >
                 {movementTypes.map((type) => (
                   <MenuItem key={type.value} value={type.value}>
@@ -356,6 +340,7 @@ const KardexView = () => {
                   startIcon={<SearchIcon />}
                   size="small"
                   fullWidth
+                  aria-label="Aplicar filtros seleccionados a la tabla de movimientos"
                 >
                   Aplicar Filtros
                 </Button>
@@ -365,6 +350,7 @@ const KardexView = () => {
                   startIcon={<RefreshIcon fontSize="small" />}
                   size="small"
                   fullWidth
+                  aria-label="Limpiar todos los filtros y mostrar todos los movimientos"
                 >
                   Limpiar
                 </Button>

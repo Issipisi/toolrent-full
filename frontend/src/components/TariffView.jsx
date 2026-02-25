@@ -285,7 +285,7 @@ const TariffView = () => {
       {/* Vista principal - FORMULARIO MÁS ANGOSTO */}
       <Grid container spacing={3}>
         {/* Columna izquierda: Tabla de resumen (más ancha) */}
-        <Grid item xs={12} md={16}>
+        <Grid item xs={12} md={7}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -458,7 +458,7 @@ const TariffView = () => {
         </Grid>
 
         {/* Columna derecha: Formulario compacto (más angosto) */}
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={5}>
           <Card sx={{ height: '100%' }}>
             <CardContent sx={{ p: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>

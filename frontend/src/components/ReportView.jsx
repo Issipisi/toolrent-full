@@ -25,6 +25,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import TuneIcon from '@mui/icons-material/Tune';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useNotification } from "../components/NotificationProvider";
 
 const ReportView = () => {
@@ -36,6 +38,9 @@ const ReportView = () => {
   const [to, setTo] = useState(dayjs());
   const [activeReport, setActiveReport] = useState("");
   const [dateFilterMode, setDateFilterMode] = useState("none"); // "none", "active", "custom"
+  
+  // NUEVO: Solo para Top Herramientas
+  const [topToolsSort, setTopToolsSort] = useState("desc");
 
   const { showNotification } = useNotification();
 
@@ -68,7 +73,7 @@ const ReportView = () => {
           setData(res.data || []);
           setTitle(`Préstamos Activos ${useDateFilter ? `(${formatDateRange()})` : ""}`);
           showNotification(
-            `✅ Se cargaron ${res.data?.length || 0} préstamos activos ${useDateFilter ? "con filtro de fechas" : ""}`,
+            `✅ Se cargaron los préstamos activos ${useDateFilter ? "con filtro de fechas" : ""}`,
             "success"
           );
           break;
@@ -85,13 +90,16 @@ const ReportView = () => {
                 toolGroupName: item.toolGroupName,
                 total: item.total,
                 category: item.category || "Sin categoría"
-              })).sort((a, b) => b.total - a.total)
+              }))
             : [];
           
-          setData(formattedData);
+          // Ordenar según el estado actual
+          const sortedData = sortTopToolsData(formattedData, topToolsSort);
+          setData(sortedData);
+          
           setTitle(`Herramientas Más Solicitadas ${useDateFilter ? `(${formatDateRange()})` : ""}`);
           showNotification(
-            `📊 Ranking generado con ${formattedData.length} herramientas ${useDateFilter ? "del período seleccionado" : ""}`,
+            `📊 Ranking Top herramientas generado ${useDateFilter ? "del período seleccionado" : ""}`,
             "success"
           );
           break;
@@ -107,7 +115,7 @@ const ReportView = () => {
           } else {
             setData(res.data);
             setTitle("Clientes con Deudas Pendientes");
-            showNotification(`👥 Se encontraron ${res.data.length} clientes con deudas`, "success");
+            showNotification(`👥 Se encontraron clientes con deudas`, "success");
           }
           break;
           
@@ -122,6 +130,34 @@ const ReportView = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // NUEVO: Función auxiliar para ordenar Top Herramientas
+  const sortTopToolsData = (dataToSort, direction) => {
+    return [...dataToSort].sort((a, b) => {
+      if (direction === "desc") {
+        return b.total - a.total; // Mayor a menor
+      } else {
+        return a.total - b.total; // Menor a mayor
+      }
+    });
+  };
+
+  // NUEVO: Cambiar ordenamiento (solo para Top Herramientas)
+  const handleTopToolsSortChange = () => {
+    if (activeReport !== "top") return;
+    
+    const newSort = topToolsSort === "desc" ? "asc" : "desc";
+    setTopToolsSort(newSort);
+    
+    // Reordenar los datos actuales
+    const sortedData = sortTopToolsData(data, newSort);
+    setData(sortedData);
+    
+    showNotification(
+      `Orden cambiado`,
+      "info"
+    );
   };
 
   // Formatear rango de fechas para mostrar
@@ -155,6 +191,7 @@ const ReportView = () => {
     setFrom(dayjs().subtract(1, 'month'));
     setTo(dayjs());
     setError("");
+    setTopToolsSort("desc"); // Resetear ordenamiento
     showNotification("🧹 Todos los filtros y datos han sido limpiados", "info");
   };
 
@@ -238,7 +275,7 @@ const ReportView = () => {
     return `$${parseFloat(amount).toLocaleString()}`;
   };
 
-  // Renderizar tabla según el tipo de reporte (igual que tu versión original)
+  // Renderizar tabla según el tipo de reporte
   const renderTable = () => {
     if (data.length === 0) return null;
 
@@ -263,7 +300,24 @@ const ReportView = () => {
                 <TableCell width="80px">N°</TableCell>
                 <TableCell>Herramienta</TableCell>
                 <TableCell>Categoría</TableCell>
-                <TableCell width="150px">Solicitudes</TableCell>
+                <TableCell width="180px">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    Solicitudes
+                    {/* NUEVO: Botón de ordenamiento solo para Top Herramientas */}
+                    <Tooltip title={`Ordenar ${topToolsSort === "desc" ? "menor a mayor" : "mayor a menor"}`}>
+                      <IconButton 
+                        size="small" 
+                        onClick={handleTopToolsSortChange}
+                        sx={{ 
+                          color: 'white',
+                          '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
+                        }}
+                      >
+                        {topToolsSort === "desc" ? <ArrowDownwardIcon fontSize="small" /> : <ArrowUpwardIcon fontSize="small" />}
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </TableCell>
                 <TableCell width="120px">Porcentaje</TableCell>
               </TableRow>
             </TableHead>
@@ -1123,19 +1177,7 @@ const ReportView = () => {
                 ? `No se encontraron registros para el período ${formatDateRange()}`
                 : "No se encontraron registros con los criterios actuales"}
             </Typography>
-            {dateFilterMode === "active" && (
-              <Button 
-                variant="outlined" 
-                size="small" 
-                sx={{ mt: 2 }}
-                onClick={() => {
-                  setDateFilterMode("none");
-                  loadReport(activeReport);
-                }}
-              >
-                Intentar sin filtro de fecha
-              </Button>
-            )}
+            
           </CardContent>
         </Card>
       )}

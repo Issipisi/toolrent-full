@@ -1,0 +1,1703 @@
+{
+  "id": "560d6442-393b-499a-a13b-d4877529945e",
+  "version": "2.0",
+  "name": "ToolRent - Pruebas funcionales",
+  "url": "http://localhost:8082",
+  "tests": [{
+    "id": "108d18e0-2adf-464f-a8a3-f44f7605933d",
+    "name": "PF01 - Préstamo exitoso",
+    "commands": [{
+      "id": "ee09d4e2-9126-4932-8992-e008a33bf219",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7ceac45e-5c4a-4298-84d1-313114838647",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dcb2497a-f5ae-434a-a679-13cd5388f8b5",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "08cc92ca-0925-4e38-ab72-5adfa03e6731",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "ac06ebf8-febd-414a-8936-09197936bb8e",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3b6db9a3-5759-4e26-bf3c-cdf4715ee988",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/loans",
+      "targets": [],
+      "value": "Gestión de Préstamos"
+    }, {
+      "id": "9598ba4e-68a3-4c67-b276-52ad826d6e1b",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "2448068f-06fb-4325-9b5d-395d062d418f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1cs040i-MuiButtonBase-root-MuiButton-root",
+      "targets": [
+        ["css=.css-1cs040i-MuiButtonBase-root-MuiButton-root", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Nuevo Préstamo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b66e6a7-d93f-4ffa-928e-3cc7b08ca1e7",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r13»",
+      "targets": [
+        ["id=«r13»", "id"],
+        ["css=#\\ABr13\\BB", "css:finder"],
+        ["xpath=//div[@id='«r13»']", "xpath:attributes"],
+        ["xpath=//div[5]/div[3]/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Cliente"
+    }, {
+      "id": "e5393dad-1a06-4703-948a-31c09461eefa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(6)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(6)", "css:finder"],
+        ["xpath=//ul[@id='«r14»']/li[6]", "xpath:idRelative"],
+        ["xpath=//li[6]", "xpath:position"],
+        ["xpath=//li[contains(.,'Juan Pérez ‑ 11111111-1')]", "xpath:innerText"]
+      ],
+      "value": "Juan Pérez"
+    }, {
+      "id": "bcb28286-854b-4156-84e0-bca7c4197216",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r15»",
+      "targets": [
+        ["id=«r15»", "id"],
+        ["css=#\\ABr15\\BB", "css:finder"],
+        ["xpath=//div[@id='«r15»']", "xpath:attributes"],
+        ["xpath=//div[6]/div[3]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "Herramienta"
+    }, {
+      "id": "6f78d427-666d-40a9-ade0-71bfff7866d8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiMenuItem-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiMenuItem-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[@id='«r16»']/li[2]", "xpath:idRelative"],
+        ["xpath=//li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'Taladro Percutor Bosch GSB 550 (Eléctrica)')]", "xpath:innerText"]
+      ],
+      "value": "Taladro Percutor Bosch GSB 550"
+    }, {
+      "id": "2adaac33-32f0-441c-9c82-e01472700a42",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "3b7255de-ee70-44fe-9628-9594d623abfc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[44]", "xpath:attributes"],
+        ["xpath=//div[4]/button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'24')]", "xpath:innerText"]
+      ],
+      "value": "Día"
+    }, {
+      "id": "39fb0bca-38f7-4cf3-b74d-3e3e3cbb5a2e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'04')]", "xpath:innerText"]
+      ],
+      "value": "Hora"
+    }, {
+      "id": "d1ebe476-5cb5-4148-862d-b19ec7f0dbfa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=//ul[2]/li[7]", "xpath:position"],
+        ["xpath=//li[contains(.,'30')]", "xpath:innerText"]
+      ],
+      "value": "Minuto"
+    }, {
+      "id": "7efcf10c-5088-4f86-898c-954a6ab4d5f0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[3]/li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'PM')]", "xpath:innerText"]
+      ],
+      "value": "PM"
+    }, {
+      "id": "9f9ecb28-3776-4d53-ac44-d64049c4a6da",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)",
+      "targets": [
+        ["css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[54]", "xpath:attributes"],
+        ["xpath=//div[8]/div[2]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'OK')]", "xpath:innerText"]
+      ],
+      "value": "OK"
+    }, {
+      "id": "fb6754d3-52db-4389-9463-7bee6421d6d7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeMedium",
+      "targets": [
+        ["css=.MuiButton-containedSizeMedium", "css:finder"],
+        ["xpath=(//button[@type='button'])[18]", "xpath:attributes"],
+        ["xpath=//div[3]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Registrar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "Registrar Préstamo"
+    }, {
+      "id": "8b6896b9-7cdd-48d3-a481-4ba63de9bbea",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "c64fdc35-ce34-424f-943c-17fa817d66af",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "Préstamo registrado exitosamente"
+    }, {
+      "id": "8c02c812-81d3-45eb-b632-47497f76b761",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [
+        ["css=.MuiButton-text > span:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/header/div/div[2]/button/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'Salir')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "cc36dee5-600a-4218-ae05-57e9c9edaef7",
+    "name": "PF02 - Préstamo bloqueado por deuda",
+    "commands": [{
+      "id": "a98d4abe-e98e-4b86-b5f6-533569eff417",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "19dda9a0-89e8-4ec5-9210-50e6c33bc9e1",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0322ddf-15b5-47d3-a45c-09c2a329791a",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "8dc769b2-e653-4d2a-b948-174d28bfcbd5",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "41aa95cc-b798-40a6-8d7f-19fd2e7d24af",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "83dbfeab-3dda-4d24-b852-8cff482cc6ce",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/loans",
+      "targets": [],
+      "value": "Gestión de Préstamos"
+    }, {
+      "id": "ad48f697-0714-4a7f-9a84-6c0ec4c69dc4",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "eacb7521-7bf5-4cf6-aafb-2b3d75f856f6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Nuevo Préstamo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0608f7df-10aa-4b06-9b7a-3493b8b2d544",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r15»",
+      "targets": [
+        ["id=«r15»", "id"],
+        ["css=#\\ABr15\\BB", "css:finder"],
+        ["xpath=//div[@id='«r15»']", "xpath:attributes"],
+        ["xpath=//div[4]/div[3]/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Cliente"
+    }, {
+      "id": "aae10829-1e55-4162-a0e6-b8b98077637b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiMenuItem-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiMenuItem-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[@id='«r16»']/li[2]", "xpath:idRelative"],
+        ["xpath=//li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'Isidora Rojas ‑ 20581478-7')]", "xpath:innerText"]
+      ],
+      "value": "Isidora Rojas"
+    }, {
+      "id": "d550d85f-6b31-4355-b713-6684a87c2b1f",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r17»",
+      "targets": [
+        ["id=«r17»", "id"],
+        ["css=#\\ABr17\\BB", "css:finder"],
+        ["xpath=//div[@id='«r17»']", "xpath:attributes"],
+        ["xpath=//div[6]/div[3]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "Herramienta"
+    }, {
+      "id": "13827397-3435-46bf-a97d-194e41fa8aa1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(4)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(4)", "css:finder"],
+        ["xpath=//ul[@id='«r18»']/li[4]", "xpath:idRelative"],
+        ["xpath=//li[4]", "xpath:position"],
+        ["xpath=//li[contains(.,'Andamio Tubular 2x1m (Construcción)')]", "xpath:innerText"]
+      ],
+      "value": "Andamio Tubular 2x1m (Construcción)"
+    }, {
+      "id": "2fe76b18-231f-4d5a-8bea-c1e0eb3c77e7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "abb21eb4-e08d-4f8d-a0a0-d3afb6379eee",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[45]", "xpath:attributes"],
+        ["xpath=//div[4]/button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'24')]", "xpath:innerText"]
+      ],
+      "value": "Día"
+    }, {
+      "id": "ae87cac5-5887-4b2d-91b5-87647a5c70cb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'04')]", "xpath:innerText"]
+      ],
+      "value": "Hora"
+    }, {
+      "id": "a996a785-58d0-4143-b37c-4fbced58b23a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=//ul[2]/li[7]", "xpath:position"],
+        ["xpath=//li[contains(.,'30')]", "xpath:innerText"]
+      ],
+      "value": "Minuto"
+    }, {
+      "id": "5bad40b3-d18a-4eb6-b5f7-3dc164116c71",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[3]/li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'PM')]", "xpath:innerText"]
+      ],
+      "value": "PM"
+    }, {
+      "id": "b7bcabf0-f593-49f5-aba7-ba22c6bef565",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)",
+      "targets": [
+        ["css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[55]", "xpath:attributes"],
+        ["xpath=//div[13]/div[2]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'OK')]", "xpath:innerText"]
+      ],
+      "value": "OK"
+    }, {
+      "id": "558d39f1-3b51-4704-a16e-24af001b8b6f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeMedium",
+      "targets": [
+        ["css=.MuiButton-containedSizeMedium", "css:finder"],
+        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["xpath=//div[3]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Registrar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "Registrar Préstamo"
+    }, {
+      "id": "87d80552-71c6-4078-9cce-b608a4f12a99",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "f5ce6433-4c10-4a0d-8577-53aea95d94ac",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "Cliente tiene deudas pendientes. Debe pagar antes de nuevo préstamo."
+    }, {
+      "id": "35a6be35-8f17-45af-b6bd-b32001767e3d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "8552d994-f4d6-4382-b271-3565cb608427",
+    "name": "PF03 - Préstamo bloqueado por límite (5 activos)",
+    "commands": [{
+      "id": "7188b65d-c327-4041-99de-b4e803ff67e4",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c01c7a03-6d65-4c8d-a080-faa969606135",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cd3c3967-72f5-46bb-b589-4f143067fe4c",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "1bd2be64-3f98-45b4-990a-047c0f3350ef",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "639e7cfb-263e-4ff4-8176-328e7e48d1e8",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9047bb01-4fad-43ac-806c-65074e7aba77",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/loans",
+      "targets": [],
+      "value": "Gestión de Préstamos"
+    }, {
+      "id": "cc697fe1-5dab-4eec-8122-f460b440d965",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "58132512-8c50-42e9-a6ff-65517bcdab32",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Nuevo Préstamo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fcbcec4c-6559-4f4d-9b91-5510eef106ec",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r15»",
+      "targets": [
+        ["id=«r15»", "id"],
+        ["css=#\\ABr15\\BB", "css:finder"],
+        ["xpath=//div[@id='«r15»']", "xpath:attributes"],
+        ["xpath=//div[4]/div[3]/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Cliente"
+    }, {
+      "id": "795a1483-4eff-4089-ac17-cdb38817edeb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(6)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(6)", "css:finder"],
+        ["xpath=//ul[@id='«r16»']/li[6]", "xpath:idRelative"],
+        ["xpath=//li[6]", "xpath:position"],
+        ["xpath=//li[contains(.,'Juan Pérez ‑ 11111111-1')]", "xpath:innerText"]
+      ],
+      "value": "Juan Pérez"
+    }, {
+      "id": "bfcf9769-332e-486f-b2a3-062ba13ec777",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r17»",
+      "targets": [
+        ["id=«r17»", "id"],
+        ["css=#\\ABr17\\BB", "css:finder"],
+        ["xpath=//div[@id='«r17»']", "xpath:attributes"],
+        ["xpath=//div[4]/div[3]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "Herramienta"
+    }, {
+      "id": "46843381-ec6c-4a8e-a11f-ed018fe3c7fa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(6)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(6)", "css:finder"],
+        ["xpath=//ul[@id='«r18»']/li[6]", "xpath:idRelative"],
+        ["xpath=//li[6]", "xpath:position"],
+        ["xpath=//li[contains(.,'Martillo Demoledor 10kg (Manual)')]", "xpath:innerText"]
+      ],
+      "value": "Martillo Demoledor 10kg (Manual)"
+    }, {
+      "id": "e7591e5f-2aa9-4cae-9f72-02767a0ff529",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "685495ee-70ff-4618-bf53-58b840901fa2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[43]", "xpath:attributes"],
+        ["xpath=//div[4]/button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'24')]", "xpath:innerText"]
+      ],
+      "value": "Día"
+    }, {
+      "id": "a5f00c56-abdd-407e-8519-7bfbb56d86da",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'04')]", "xpath:innerText"]
+      ],
+      "value": "Hora"
+    }, {
+      "id": "0bccc3f6-72a4-4283-9d88-267b46152124",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=//ul[2]/li[7]", "xpath:position"],
+        ["xpath=//li[contains(.,'30')]", "xpath:innerText"]
+      ],
+      "value": "Minuto"
+    }, {
+      "id": "225e114e-c8c5-4784-8304-1ece4985228a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[3]/li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'PM')]", "xpath:innerText"]
+      ],
+      "value": "PM"
+    }, {
+      "id": "6e7d27dc-b09f-4547-8a16-3aab3ce8d974",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)",
+      "targets": [
+        ["css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[49]", "xpath:attributes"],
+        ["xpath=//div[9]/div[2]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'OK')]", "xpath:innerText"]
+      ],
+      "value": "OK"
+    }, {
+      "id": "44d154b6-63f0-4739-a830-6a2e36885798",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeMedium",
+      "targets": [
+        ["css=.MuiButton-containedSizeMedium", "css:finder"],
+        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["xpath=//div[3]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Registrar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "Registrar Préstamo"
+    }, {
+      "id": "c959b574-77d3-4287-8084-3e02af584055",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "987b9272-2fba-48ca-b354-63674c877dad",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "Cliente alcanzó el límite máximo de préstamos simultáneos (5)"
+    }, {
+      "id": "1486cb75-44c5-4b02-8428-5468caa9a5dd",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "xpath=//table//tr[contains(.,'Juan Pérez') and contains(.,'Martillo Demoledor 10kg (Manual)')]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "592f5918-2968-4219-9018-005c4f64ec8c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "d9991c70-3044-41d9-833b-e99b80856c42",
+    "name": "PF04 - Préstamo bloqueado por herramienta repetida",
+    "commands": [{
+      "id": "b301c5ce-eee1-473c-86fd-2afd35adecdd",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8920fd5e-b66b-4041-b79f-b48331278bcd",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5119edf4-2480-492e-abce-a73faa38fda1",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "267ac2a4-288e-44c8-956d-8de48c5ab592",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "44b0ac11-7001-4fd6-ab61-d3a099ec95cb",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8c4f4579-5243-4ed8-8205-8612fe5a0253",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/loans",
+      "targets": [],
+      "value": "Gestión de Préstamos"
+    }, {
+      "id": "b61434ef-6f06-498d-bf61-a4aa4f48f538",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "fbd829ac-8272-4156-979d-185f3d8ada84",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Nuevo Préstamo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0fa2f25a-c943-49ab-96eb-64f98f8ec1d3",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r15»",
+      "targets": [
+        ["id=«r15»", "id"],
+        ["css=#\\ABr15\\BB", "css:finder"],
+        ["xpath=//div[@id='«r15»']", "xpath:attributes"],
+        ["xpath=//div[4]/div[3]/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Cliente"
+    }, {
+      "id": "5947f7d8-278e-4b03-a86e-cff8936c1406",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//ul[@id='«r1n»']/li[5]", "xpath:idRelative"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'Bernardita Alvarado ‑ 13677604-5')]", "xpath:innerText"]
+      ],
+      "value": "Bernardita Alvarado"
+    }, {
+      "id": "0e049f20-322e-46a0-ae0d-33da0b706dd0",
+      "comment": "",
+      "command": "click",
+      "target": "id=«r17»",
+      "targets": [
+        ["id=«r17»", "id"],
+        ["css=#\\ABr17\\BB", "css:finder"],
+        ["xpath=//div[@id='«r17»']", "xpath:attributes"],
+        ["xpath=//div[5]/div[3]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "Herramienta"
+    }, {
+      "id": "66a06ca2-74f0-469a-9c8b-4ff390187497",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(6)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(6)", "css:finder"],
+        ["xpath=//ul[@id='«r20»']/li[6]", "xpath:idRelative"],
+        ["xpath=//li[6]", "xpath:position"],
+        ["xpath=//li[contains(.,'Martillo Demoledor 10kg (Manual)')]", "xpath:innerText"]
+      ],
+      "value": "Martillo Demoledor 10kg (Manual)"
+    }, {
+      "id": "57dd3457-c122-4e2c-b548-8519edaaf2be",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "dd57d2c0-d400-4a57-875f-f8e270e8a6aa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[43]", "xpath:attributes"],
+        ["xpath=//div[4]/button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'24')]", "xpath:innerText"]
+      ],
+      "value": "Día"
+    }, {
+      "id": "2d93df87-c6b3-4d1b-8241-7ab3e4ec6a73",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(1) > .MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'04')]", "xpath:innerText"]
+      ],
+      "value": "Hora"
+    }, {
+      "id": "4b32133e-2ee3-4dfe-9b00-2697a15ec3ab",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(2) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=//ul[2]/li[7]", "xpath:position"],
+        ["xpath=//li[contains(.,'30')]", "xpath:innerText"]
+      ],
+      "value": "Minuto"
+    }, {
+      "id": "4f11b138-9424-4156-9e7f-38c6267a6d1c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//ul[3]/li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'PM')]", "xpath:innerText"]
+      ],
+      "value": "PM"
+    }, {
+      "id": "88e91bfe-a32b-44fa-a90f-2d4af614cc87",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)",
+      "targets": [
+        ["css=.css-o9ep9c-MuiButtonBase-root-MuiButton-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[49]", "xpath:attributes"],
+        ["xpath=//div[9]/div[2]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'OK')]", "xpath:innerText"]
+      ],
+      "value": "Ok"
+    }, {
+      "id": "c2032eab-18e0-4442-9888-83993ee201b1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeMedium",
+      "targets": [
+        ["css=.MuiButton-containedSizeMedium", "css:finder"],
+        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["xpath=//div[3]/div/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Registrar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "Registrar Préstamo"
+    }, {
+      "id": "5ec46e8a-3f04-4b51-b740-8be9b2f7bade",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "598071b5-e1f4-4d95-9548-569a23b2311d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "El cliente ya tiene esta herramienta en préstamo. Debe devolverla primero."
+    }, {
+      "id": "468ee521-220c-438d-bf82-b94525ead19b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "f8691349-70ce-4777-adb6-a606871a378e",
+    "name": "PF05 - Reporte de préstamos activo con filtro de fecha ",
+    "commands": [{
+      "id": "5f944cd9-8316-437d-908a-8fdcda68485b",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2b2c1f0d-659c-4248-87cc-268c56a6ef07",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0644b165-2a33-4acf-8751-9e52592d53fb",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "598ab372-e9a3-433d-a06f-a970c23fabc7",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "3c2e4646-5e52-4d94-9011-3a5ccd68f5cc",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "691fe2de-82b2-4e55-87e8-0cf6cae4130e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/reports",
+      "targets": [],
+      "value": "Reportes y Estadísticas"
+    }, {
+      "id": "93464b9b-a6f6-4321-ac83-38841898ea02",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "5c313944-fd83-4b56-b23f-e0e9a151c253",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(1) .MuiCardContent-root",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(1) .MuiCardContent-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/div/div", "xpath:idRelative"],
+        ["xpath=//main/div/div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": "Préstamos Activos"
+    }, {
+      "id": "2238bf9e-cf68-4c95-aab7-42d02c8b4c51",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "a9e4c0dc-b578-4696-88f4-a8a8a05609a5",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "✅ Se cargaron los préstamos activos"
+    }, {
+      "id": "672ee12b-dd1b-488c-afb0-a5b3f4e691be",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiFormControl-root:nth-child(1) path",
+      "targets": [
+        ["css=.MuiFormControl-root:nth-child(1) path", "css:finder"]
+      ],
+      "value": "Desde"
+    }, {
+      "id": "4a2f9296-eb48-4fbf-a1e3-19e6edbc7606",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[29]", "xpath:attributes"],
+        ["xpath=//div[3]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'12')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0cdd2bc2-2bf1-4868-b2cb-03a8de907de3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiFormControl-root:nth-child(3) path",
+      "targets": [
+        ["css=.MuiFormControl-root:nth-child(3) path", "css:finder"]
+      ],
+      "value": "Hasta"
+    }, {
+      "id": "0501f640-8ebf-4974-a84a-7a4e3d9112ea",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=(//button[@type='button'])[45]", "xpath:attributes"],
+        ["xpath=//div[4]/button[7]", "xpath:position"],
+        ["xpath=//button[contains(.,'28')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "51ae52b8-0dac-40cc-b34d-6de54d1a4c02",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeSmall",
+      "targets": [
+        ["css=.MuiButton-containedSizeSmall", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div[2]/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Aplicar Filtro')]", "xpath:innerText"]
+      ],
+      "value": "Aplicar Filtro"
+    }, {
+      "id": "1f2985de-b686-459d-a606-1e87dacc7077",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "2a9f5322-9904-47a2-9c9e-35b39478977a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "✅ Se cargaron los préstamos activos con filtro de fechas"
+    }, {
+      "id": "f23a7a93-7560-4705-a2fe-e328a27b4d63",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "5520e7cb-a8cb-4b45-8223-9042fcab04d4",
+    "name": "PF06 - Reporte de clientes con deudas (+0)",
+    "commands": [{
+      "id": "771590dd-f1a0-4e6d-a89e-37d8af529f07",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1cadf348-4754-4193-9fe8-4a21185303bd",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f5072d87-201b-47c4-ac6e-60b5aaf9cd29",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "48701ddc-78c1-4ea3-a9da-6cda4ab7ad57",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "ce54f892-2ebf-40c7-94da-b34c428e94d2",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7e6d758-c16b-4e28-838b-1a96911de44f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/reports",
+      "targets": [],
+      "value": "Reportes y Estadísticas"
+    }, {
+      "id": "6d703fba-d717-4603-ae9a-1ead4ca2cb9a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "4a3f97b9-74aa-41e7-9b8f-8101bae8a5fc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(2) .MuiCardContent-root",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(2) .MuiCardContent-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div[2]/div/div", "xpath:idRelative"],
+        ["xpath=//main/div/div[3]/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "Clientes con Deudas"
+    }, {
+      "id": "c3148933-7936-4845-b4de-9b916c66dafc",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "805a26a4-eaaf-4fc6-a3c9-8c43412038f4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "👥 Se encontraron clientes con deudas"
+    }, {
+      "id": "27f6e830-67bc-45df-b9b3-aaecb60dca1b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "2bbfa69d-4554-4523-9544-f222e50bf5f2",
+    "name": "PF07 - Reporte Top herramientas con filtro de fecha",
+    "commands": [{
+      "id": "f2bb4ac2-a99a-45d4-9bef-c4bfe1aa56a5",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7b048d28-4c0c-4f24-8ded-7fe8c3cc3eee",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9bd96159-5a30-4729-b17f-8a1794f72d49",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "b99ef26b-775b-4ae1-939d-afa3da0d4ac2",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "412a81e9-c74b-4dea-b29d-3241619bb628",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "538471e6-6da9-4335-9a10-9ac266834b3a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/reports",
+      "targets": [],
+      "value": "Reportes y Estadísticas"
+    }, {
+      "id": "ff2f64f5-6fb8-43ca-b2b0-6efac1b155a4",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "d5c2f5b1-b546-4b61-88e7-ae2de8865815",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(3) .MuiCardContent-root",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(3) .MuiCardContent-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div[3]/div/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div[3]/div/div", "xpath:position"]
+      ],
+      "value": "Top Herramientas"
+    }, {
+      "id": "f815d3e5-d6ad-4a32-97c9-4a18c7cc0574",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "5f85fa33-81ae-4e41-9576-a6e0e1c73380",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "📊 Ranking Top herramientas generado"
+    }, {
+      "id": "1805cb38-6d44-44c6-9d79-345c26df1cb3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiFormControl-root:nth-child(1) path",
+      "targets": [
+        ["css=.MuiFormControl-root:nth-child(1) path", "css:finder"]
+      ],
+      "value": "Desde"
+    }, {
+      "id": "5930cdff-099b-429a-86e0-4f84a9ffadac",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(3) > .MuiButtonBase-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(3) > .MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[29]", "xpath:attributes"],
+        ["xpath=//div[3]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'12')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c00e08d6-e275-438d-a9bd-e7eb33078f83",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiFormControl-root:nth-child(3) path",
+      "targets": [
+        ["css=.MuiFormControl-root:nth-child(3) path", "css:finder"]
+      ],
+      "value": "Hasta"
+    }, {
+      "id": "0af0006b-ffff-4a4d-8cda-b179796e82b3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiDayCalendar-weekContainer:nth-child(4) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=(//button[@type='button'])[45]", "xpath:attributes"],
+        ["xpath=//div[4]/button[7]", "xpath:position"],
+        ["xpath=//button[contains(.,'28')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c690d0e4-16fa-4030-a0d9-5679ca5bd69f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeSmall",
+      "targets": [
+        ["css=.MuiButton-containedSizeSmall", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div[2]/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Aplicar Filtro')]", "xpath:innerText"]
+      ],
+      "value": "Aplicar Filtro"
+    }, {
+      "id": "8987726e-36f3-4eec-9c0f-e5dac40a6d2f",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "175c0402-fa38-4325-9dae-4cc770c5e5da",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "📊 Ranking Top herramientas generado del período seleccionado"
+    }, {
+      "id": "17f67532-27fa-479f-aadb-0e6bc66bbb59",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "51818483-ca87-452e-8d01-12e9867a578c",
+    "name": "PF08 -  Reporte Top Herramientas con ordenamiento ascendente/descendente del ranking 30d",
+    "commands": [{
+      "id": "9b466190-1230-48f6-ad7a-60cb39256deb",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9325ab2-83dc-466e-8833-12cf0607bb58",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4e95dda3-2277-4bc5-9a07-f9ef365c2e24",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "IsiAdmin"
+    }, {
+      "id": "b8e8a336-27fd-4ed0-8028-3219a1dcc820",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='kc-form-login']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "448dcec6-53a6-47c1-a2ba-a8a7a21354a7",
+      "comment": "",
+      "command": "click",
+      "target": "id=kc-login",
+      "targets": [
+        ["id=kc-login", "id"],
+        ["name=login", "name"],
+        ["css=#kc-login", "css:finder"],
+        ["xpath=//input[@id='kc-login']", "xpath:attributes"],
+        ["xpath=//div[@id='kc-form-buttons']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d29436fe-b392-48ed-8e69-bcb2f492196a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5173/reports",
+      "targets": [],
+      "value": "Reportes y Estadísticas"
+    }, {
+      "id": "c02ee171-456b-474c-9e87-970a7e654c0a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["linkText=Comenzar Préstamo", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Comenzar Préstamo')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/loans')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Comenzar Préstamo')]", "xpath:innerText"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "ff8993ae-3d7e-4f1d-9580-79a30dda3d3c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(3) .MuiCardContent-root",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(3) .MuiCardContent-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div[3]/div[3]/div/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div[3]/div/div", "xpath:position"]
+      ],
+      "value": "Top Herramientas"
+    }, {
+      "id": "04e06ae8-48b2-4bd0-a33e-b961cb8bd05e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "3000"
+    }, {
+      "id": "1594bfd2-4d06-42bb-9bef-add703f824d9",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "📊 Ranking Top herramientas generado"
+    }, {
+      "id": "245c2e15-5937-431d-ae6f-e1a1c18d08e7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div[2]/div/div[2]/div/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'30d')]", "xpath:innerText"]
+      ],
+      "value": "30d"
+    }, {
+      "id": "415e6934-d1ac-4a04-a17e-2f0ba308daba",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedSizeSmall",
+      "targets": [
+        ["css=.MuiButton-containedSizeSmall", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/div[2]/div/div/div[2]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Aplicar Filtro')]", "xpath:innerText"]
+      ],
+      "value": "Aplicar Filtro"
+    }, {
+      "id": "be9e8f29-fee2-47a2-aca6-d6fdcadd3839",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "📊 Ranking Top herramientas generado del período seleccionado"
+    }, {
+      "id": "e8b48d6a-0d26-48f7-b79f-e4a4a682e2e8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1rjnnpz-MuiButtonBase-root-MuiIconButton-root path",
+      "targets": [
+        ["css=.css-1rjnnpz-MuiButtonBase-root-MuiIconButton-root path", "css:finder"]
+      ],
+      "value": "Ordenar de menor a Mayor"
+    }, {
+      "id": "dc9c392c-0c84-4808-9c43-cd362e85ce6f",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "3000"
+    }, {
+      "id": "74d7888c-ec89-4dad-a788-cdf594307701",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [],
+      "value": "Orden cambiado"
+    }, {
+      "id": "787a2037-6111-4262-b7e1-8ac6871a85fb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-text > span:nth-child(2)",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "93e80edf-f98a-4277-bb00-6e1ec198d6b8",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:8082/"],
+  "plugins": []
+}

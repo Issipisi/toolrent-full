@@ -16,11 +16,32 @@ import toolGroupService from "../services/toolGroup.service";
 import dayjs from "dayjs";
 import AddIcon from '@mui/icons-material/Add';
 
+// NUEVOS IMPORTS PARA HEURÍSTICA 10 - Ayuda y Documentación
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 const Home = () => {
   const { keycloak } = useKeycloak();
   const userRoles = keycloak.tokenParsed?.realm_access?.roles || [];
   const isAdmin = userRoles.includes("ADMIN");
   const isEmployee = userRoles.includes("EMPLOYEE");
+  
+  // NUEVO ESTADO para controlar el diálogo de ayuda
+  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
   
   const [dashboardStats, setDashboardStats] = useState({
     activeLoans: 0,
@@ -397,7 +418,270 @@ const Home = () => {
           ))}
         </Grid>
       </Box>
+      
+      {/* ================================================================== */}
+      {/* NUEVA SECCIÓN: Centro de Ayuda - Heurística 10 de Nielsen */}
+      {/* ================================================================== */}
+      <Box sx={{ mb: 6, mt: 4 }}>
+        <Typography variant="h4" sx={{ 
+          color: "#6c63ff", 
+          mb: 4, 
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1
+        }}>
+          <HelpOutlineIcon /> Centro de Ayuda
+        </Typography>
+        
+        <Grid container spacing={3} justifyContent="center">
+          {/* Tarjeta de Guía Rápida */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ 
+              height: '100%', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6
+              }
+            }} onClick={() => setHelpDialogOpen(true)}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Box sx={{ 
+                  backgroundColor: '#e3f2fd',
+                  width: 70,
+                  height: 70,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2
+                }}>
+                  <MenuBookIcon sx={{ color: '#2196f3', fontSize: 32 }} />
+                </Box>
+                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                  Guía Rápida
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Aprende los conceptos básicos del sistema
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
+          {/* Tarjeta de Soporte */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ 
+              height: '100%', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6
+              }
+            }} onClick={() => window.open('mailto:soporte@toolrent.com', '_blank')}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Box sx={{ 
+                  backgroundColor: '#f3e5f5',
+                  width: 70,
+                  height: 70,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2
+                }}>
+                  <SupportAgentIcon sx={{ color: '#9c27b0', fontSize: 32 }} />
+                </Box>
+                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                  Contactar Soporte
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  ¿Problemas técnicos? Escríbenos
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Tarjeta de FAQ */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ 
+              height: '100%', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6
+              }
+            }} onClick={() => setHelpDialogOpen(true)}>
+              <CardContent sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Box sx={{ 
+                  backgroundColor: '#fff3e0',
+                  width: 70,
+                  height: 70,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2
+                }}>
+                  <ContactSupportIcon sx={{ color: '#ff9800', fontSize: 32 }} />
+                </Box>
+                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                  Preguntas Frecuentes
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Respuestas a las dudas más comunes
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+        </Grid>
+      </Box>
+
+      {/* ================================================================== */}
+      {/* NUEVO DIÁLOGO MODAL: Documentación Detallada */}
+      {/* ================================================================== */}
+      <Dialog 
+        open={helpDialogOpen} 
+        onClose={() => setHelpDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle sx={{ 
+          backgroundColor: '#6c63ff', 
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
+        }}>
+          <HelpOutlineIcon />
+          Centro de Ayuda - ToolRent
+        </DialogTitle>
+        <DialogContent sx={{ p: 3 }}>
+          <Typography variant="h6" sx={{ mb: 2, color: '#6c63ff' }}>
+            📚 Guía de Inicio Rápido
+          </Typography>
+          
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                ¿Cómo crear un nuevo préstamo?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body2" color="text.secondary">
+                1. Haz clic en "Comenzar Préstamo" desde la página de inicio<br/>
+                2. Selecciona el cliente de la lista o registra uno nuevo<br/>
+                3. Agrega las herramientas disponibles al carrito<br/>
+                4. Define la fecha de devolución estimada<br/>
+                5. Confirma el préstamo y entrega las herramientas
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                ¿Cómo gestionar devoluciones?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body2" color="text.secondary">
+                1. Ve a la sección "Préstamos y Devoluciones"<br/>
+                2. Busca el préstamo activo por cliente o ID<br/>
+                3. Revisa el estado de cada herramienta<br/>
+                4. Registra daños si los hay (se calcula multa automáticamente)<br/>
+                5. Confirma la devolución y libera la garantía
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                ¿Cómo funciona el sistema de multas?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body2" color="text.secondary">
+                • <strong>Retraso:</strong> Se calcula automáticamente según días de atraso y tarifa diaria<br/>
+                • <strong>Daños:</strong> Se evalúa el estado y se aplica % del valor de reposición<br/>
+                • <strong>Pérdida total:</strong> Se cobra el 100% del valor de reposición<br/>
+                • Las deudas se pueden pagar desde "Préstamos y Devoluciones"
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Divider sx={{ my: 3 }} />
+          
+          <Typography variant="h6" sx={{ mb: 2, color: '#6c63ff' }}>
+            📞 Contacto de Soporte
+          </Typography>
+          
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            ¿Necesitas ayuda adicional? Contáctanos:
+          </Typography>
+          
+          <List dense>
+            <ListItem>
+              <ListItemIcon>
+                <SupportAgentIcon fontSize="small" color="primary" />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Email" 
+                secondary="soporte@toolrent.com" 
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <SupportAgentIcon fontSize="small" color="primary" />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Teléfono" 
+                secondary="+56 2 2123 4567 (Lunes a Viernes 9:00 - 18:00)" 
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <SupportAgentIcon fontSize="small" color="primary" />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Tiempo de respuesta" 
+                secondary="24-48 horas hábiles" 
+              />
+            </ListItem>
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setHelpDialogOpen(false)} color="primary" variant="contained">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
       
       {/* Pie de página */}
       <Divider sx={{ my: 4 }} />

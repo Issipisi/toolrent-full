@@ -18,10 +18,10 @@ export const NotificationProvider = ({ children }) => {
     open: false,
     message: "",
     severity: "success",
-    duration: 3000
+    duration: 5000
   });
 
-  const showNotification = (message, severity = "success", duration = 3000) => {
+  const showNotification = (message, severity = "success", duration = 5000) => {
     setNotification({
       open: true,
       message,
